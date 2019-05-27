@@ -1,7 +1,7 @@
 package org.micro.plugin.dialog;
 
 import org.micro.plugin.Constants;
-import org.micro.plugin.bean.ParamBean;
+import org.micro.plugin.bean.MicroConfig;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.micro.plugin.util.DatabaseUtil;
 import org.micro.plugin.util.GenUtils;
@@ -17,7 +17,7 @@ public class AutoCodeDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField tableName;
-    private ParamBean bean = null;
+    private MicroConfig microConfig = null;
 
     public AutoCodeDialog() {
         setContentPane(this.contentPane);
@@ -25,7 +25,7 @@ public class AutoCodeDialog extends JDialog {
         getRootPane().setDefaultButton(this.buttonOK);
         setSize(400, 200);
         setLocationRelativeTo(null);
-        setTitle(Constants.MICRO_TOOL);
+        setTitle(Constants.MICRO_SERVICE);
 
         this.buttonOK.addActionListener(new ActionListener() {
             @Override
@@ -60,9 +60,9 @@ public class AutoCodeDialog extends JDialog {
     }
 
     private void onOK() {
-        this.bean = buildParam();
-        if (this.bean != null) {
-            if (creatFile(this.bean)) {
+        this.microConfig = buildParam();
+        if (this.microConfig != null) {
+            if (creatFile(this.microConfig)) {
                 JOptionPane.showMessageDialog(getContentPane(), "代码生成执行完毕！");
                 dispose();
             }
@@ -74,19 +74,19 @@ public class AutoCodeDialog extends JDialog {
     }
 
 
-    private ParamBean buildParam() {
+    private MicroConfig buildParam() {
         if (paramCheck().booleanValue()) {
             com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
             AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
 
-            ParamBean bean = new ParamBean();
-            bean.setTxtDatabaseUrl("jdbc:mysql://" + config.getDatabaseUrl() + "?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8");
-            bean.setTxtDatabaseUser(config.getDatabaseUser());
-            bean.setTxtDatabasePwd(config.getDatabasePwd());
-            bean.setTxtCreator(config.getCreator());
-            bean.setTxtProjectPath(config.getProjectPath());
-            bean.setTxtEmail(config.getEmail());
-            bean.setTxtTableName(this.tableName.getText().trim().toUpperCase());
+            MicroConfig bean = new MicroConfig();
+            bean.setDatabaseUrl("jdbc:mysql://" + config.getDatabaseUrl() + "?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8");
+            bean.setDatabaseUser(config.getDatabaseUser());
+            bean.setDatabasePwd(config.getDatabasePwd());
+            bean.setCreateAuthor(config.getCreator());
+            bean.setProjectPath(config.getProjectPath());
+            bean.setCreateEmail(config.getEmail());
+            bean.setTableName(this.tableName.getText().trim().toUpperCase());
             return bean;
         }
 
@@ -94,23 +94,19 @@ public class AutoCodeDialog extends JDialog {
     }
 
     private Boolean paramCheck() {
-
-        Boolean checkResult = Boolean.valueOf(true);
-
+        boolean checkResult = true;
         if ("".equals(this.tableName.getText().trim())) {
-
             JOptionPane.showMessageDialog(this, "请填写数据库表名！");
-
-            checkResult = Boolean.valueOf(false);
+            checkResult = false;
         }
 
         return checkResult;
     }
 
-    private boolean creatFile(ParamBean bean) {
+    private boolean creatFile(MicroConfig bean) {
         com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
         AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-        String[] tableNames = bean.getTxtTableName().split(",");
+        String[] tableNames = bean.getTableName().split(",");
         DatabaseUtil dbUtil = new DatabaseUtil(bean);
 
         try {
@@ -124,7 +120,7 @@ public class AutoCodeDialog extends JDialog {
                 //查询列信息
                 List<Map<String, String>> columns = dbUtil.findTableColumns(tableName);
                 //生成代码
-                GenUtils.generatorCode(table, columns, config.getProjectPath() + "/");
+                GenUtils.generatorCode(microConfig, table, columns, config.getProjectPath() + "/");
             }
 
             return true;

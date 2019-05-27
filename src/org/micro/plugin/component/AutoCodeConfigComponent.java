@@ -76,7 +76,7 @@ public class AutoCodeConfigComponent implements BaseComponent, Configurable, Per
     @Nls
     @Override
     public String getDisplayName() {
-        return Constants.MICRO_TOOL;
+        return Constants.MICRO_SERVICE;
     }
 
     @Nullable

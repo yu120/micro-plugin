@@ -2,6 +2,7 @@ package org.micro.plugin.util;
 
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.ColumnEntity;
+import org.micro.plugin.bean.MicroConfig;
 import org.micro.plugin.bean.TableEntity;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.apache.commons.io.IOUtils;
@@ -22,8 +23,8 @@ import java.util.*;
 public class GenUtils {
 
     private static final String ENTITY = "Entity.java.vm";
-    private static final String DAO_JAVA = "Dao.java.vm";
-    private static final String DAO_XML = "Dao.xml.vm";
+    private static final String MAPPER_JAVA = "Mapper.java.vm";
+    private static final String MAPPER_XML = "Mapper.xml.vm";
     private static final String SERVICE = "Service.java.vm";
     private static final String SERVICE_IMPL = "ServiceImpl.java.vm";
     private static final String CONTROLLER = "Controller.java.vm";
@@ -32,8 +33,8 @@ public class GenUtils {
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<>();
         templates.add("template/" + ENTITY);
-        templates.add("template/" + DAO_JAVA);
-        templates.add("template/" + DAO_XML);
+        templates.add("template/" + MAPPER_JAVA);
+        templates.add("template/" + MAPPER_XML);
         templates.add("template/" + SERVICE);
         templates.add("template/" + SERVICE_IMPL);
         templates.add("template/" + CONTROLLER);
@@ -69,7 +70,7 @@ public class GenUtils {
     /**
      * 生成代码
      */
-    public static void generatorCode(Map<String, String> table,
+    public static void generatorCode(MicroConfig microConfig, Map<String, String> table,
                                      List<Map<String, String>> columns, String projectPath) throws Exception {
         com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
         AutoCodeConfigComponent applicationComponent = application.getComponent(AutoCodeConfigComponent.class);
@@ -80,15 +81,10 @@ public class GenUtils {
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(table.get("tableName"));
         tableEntity.setComments(table.get("tableComment"));
-
-        String tablePrefix = "";
-        if (tableEntity.getTableName().indexOf("_") > 0) {
-            tablePrefix = tableEntity.getTableName().split("_")[0];
-        }
-        String pre = tablePrefix.replace("_", "").toLowerCase();
+        String tableNamePrefix = microConfig.getTableNamePrefix();
 
         //表名转换成Java类名
-        String className = tableToJava(tableEntity.getTableName(), tablePrefix);
+        String className = tableToJava(tableEntity.getTableName(), tableNamePrefix);
         tableEntity.setClassName(className);
         tableEntity.setClassname(StringUtils.uncapitalize(className));
 
@@ -183,7 +179,7 @@ public class GenUtils {
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
         map.put("hasDate", hasDate);
         map.put("hasBigDecimal", hasBigDecimal);
-        map.put("pre", pre);
+        map.put("pre", tableNamePrefix);
 
         VelocityContext context = new VelocityContext(map);
 
@@ -230,31 +226,45 @@ public class GenUtils {
         return columnToJava(tableName);
     }
 
+    public static void main(String[] args) {
+        TableEntity tableEntity = new TableEntity();
+        tableEntity.setTableName("member_role");
+
+        String tablePrefix = "";
+        if (tableEntity.getTableName().indexOf("_") > 0) {
+            tablePrefix = tableEntity.getTableName().split("_")[0];
+        }
+        String pre = tablePrefix.replace("_", "").toLowerCase();
+        System.out.println(tableToJava(tableEntity.getTableName(), pre));
+    }
+
     /**
      * 获取文件名
      */
     public static String getFileName(String template, String className, String packageName) {
-        String packagePath = "";
+        String javaPath = "src" + File.separator + "main" + File.separator + "java" + File.separator;
+        String resourcesPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator;
         if (StringUtils.isNotBlank(packageName)) {
-            packagePath += packageName.replace(".", File.separator) + File.separator;
+            javaPath += packageName.replace(".", File.separator) + File.separator;
         }
         if (template.contains(ENTITY)) {
-            return packagePath + "entity" + File.separator + className + "Entity.java";
+            return javaPath + "entity" + File.separator + className + "Entity.java";
         }
-        if (template.contains(DAO_JAVA)) {
-            return packagePath + "dao" + File.separator + className + "Dao.java";
-        }
-        if (template.contains(DAO_XML)) {
-            return packagePath + "dao" + File.separator + className + "Dao.xml";
+        if (template.contains(MAPPER_JAVA)) {
+            return javaPath + "mapper" + File.separator + className + "Dao.java";
         }
         if (template.contains(SERVICE)) {
-            return packagePath + "service" + File.separator + className + "Service.java";
+            return javaPath + "service" + File.separator + className + "Service.java";
         }
         if (template.contains(SERVICE_IMPL)) {
-            return packagePath + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
+            return javaPath + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
         }
         if (template.contains(CONTROLLER)) {
-            return packagePath + "controller" + File.separator + className + "Controller.java";
+            return javaPath + "controller" + File.separator + className + "Controller.java";
+        }
+
+        if (template.contains(MAPPER_XML)) {
+            return resourcesPath + "mapper" + File.separator + className + "Mapper.xml";
         }
 
         throw new IllegalArgumentException("没有配置模板：" + template);

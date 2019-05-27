@@ -1,6 +1,7 @@
 package org.micro.plugin.util;
 
-import org.micro.plugin.bean.ParamBean;
+import org.micro.plugin.Constants;
+import org.micro.plugin.bean.MicroConfig;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import java.util.Map;
 public class DatabaseUtil {
 
     private Connection conn;
-    private ParamBean bean;
+    private MicroConfig bean;
 
-    public DatabaseUtil(ParamBean bean) {
+    public DatabaseUtil(MicroConfig bean) {
         this.bean = bean;
     }
 
@@ -24,13 +25,12 @@ public class DatabaseUtil {
             }
 
             Class.forName("com.mysql.jdbc.Driver");
-            return DriverManager.getConnection(this.bean.getTxtDatabaseUrl(), this.bean.getTxtDatabaseUser(), this.bean.getTxtDatabasePwd());
+            return DriverManager.getConnection(this.bean.getDatabaseUrl(), this.bean.getDatabaseUser(), this.bean.getDatabasePwd());
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("数据库连接失败！");
             throw e;
         }
     }
-
 
     public Map<String, String> findTableDescription(String tableName) throws Exception {
         Connection conn = getConnection();
@@ -38,26 +38,21 @@ public class DatabaseUtil {
         ResultSet rs = null;
         Map<String, String> map = new HashMap<>(4);
         try {
-            ps = conn.prepareStatement("SELECT TABLE_NAME,table_comment COMMENT FROM information_schema.tables WHERE TABLE_NAME=?");
+            ps = conn.prepareStatement(Constants.SELECT_SQL);
             ps.setString(1, tableName);
             rs = ps.executeQuery();
             if (rs.next()) {
-                map.put("tableName", rs.getString("TABLE_NAME"));
-                map.put("tableComment", rs.getString("COMMENT"));
+                map.put("tableName", rs.getString(Constants.TABLE_NAME_KEY));
+                map.put("tableComment", rs.getString(Constants.COMMENT_KEY));
             }
+
             return map;
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
-                ps.close();
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            this.close(ps, rs);
         }
     }
-
 
     public List<Map<String, String>> findTableColumns(String tableName) throws Exception {
         Connection conn = getConnection();
@@ -65,9 +60,7 @@ public class DatabaseUtil {
         ResultSet rs = null;
 
         try {
-            String sql = "select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra from information_schema.columns" +
-                    " where table_name = '" + tableName + "' and table_schema = (select database()) order by ordinal_position";
-            ps = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(String.format(Constants.SELECT_TABLE_COLUMN_SQL, tableName));
             rs = ps.executeQuery();
             List<Map<String, String>> columns = new ArrayList<>();
             Map<String, String> column = null;
@@ -85,12 +78,20 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             throw e;
         } finally {
-            try {
+            this.close(ps, rs);
+        }
+    }
+
+    private void close(PreparedStatement ps, ResultSet rs) {
+        try {
+            if (ps != null) {
                 ps.close();
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

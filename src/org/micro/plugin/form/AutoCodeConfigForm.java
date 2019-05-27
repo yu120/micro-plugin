@@ -85,7 +85,7 @@ public class AutoCodeConfigForm implements Configurable {
     @Nls
     @Override
     public String getDisplayName() {
-        return Constants.MICRO_TOOL;
+        return Constants.MICRO_SERVICE;
     }
 
     @Nullable

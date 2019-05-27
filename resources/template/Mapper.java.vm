@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ${comments}Dao
+ * ${comments} Mapper
  *
  * @author ${author}
  * @date ${datetime}
  */
 @Mapper
-public interface ${className}Dao extends BaseMapper<${className}Entity> {
+public interface ${className}Mapper extends BaseMapper<${className}Entity> {
 
     /**
      * 查询所有列表
