@@ -1,0 +1,40 @@
+package ${package}.entity;
+
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.io.Serializable;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+#if(${hasDate})
+import java.util.Date;
+#end
+
+/**
+ * ${comments}实体
+ * 表名 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@TableName("${tableName}")
+public class ${className}Entity implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+#if($column.columnName == $pk.columnName)
+    /**
+     * $column.comments
+     */
+    @TableId
+    private $column.attrType $column.attrname;
+#else
+    /**
+     * $column.comments
+     */
+    private $column.attrType $column.attrname;
+#end#end
+}

@@ -1,0 +1,47 @@
+<idea-plugin>
+    <id>org.micro.plugin</id>
+    <name>Micro</name>
+    <version>1.0.0</version>
+    <vendor email="595208882@qq.com" url="http://www.yourcompany.com">Micro</vendor>
+
+    <description><![CDATA[The Micro Service Framework.<br>]]></description>
+
+    <change-notes><![CDATA[
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="173.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- add your extensions here -->
+        <applicationConfigurable instance="com.platform.gen.form.AutoCodeConfigForm"/>
+    </extensions>
+
+    <application-components>
+        <!-- add your application components here -->
+        <component>
+            <implementation-class>com.platform.gen.component.AutoCodeComponent</implementation-class>
+        </component>
+        <component>
+            <implementation-class>com.platform.gen.component.AutoCodeConfigComponent</implementation-class>
+        </component>
+    </application-components>
+
+    <actions>
+        <group id="MyPlugin.SampleMenu" text="Micro" description="Micro Service Tool">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="Myplugin.Textboxes" class="com.platform.gen.action.AutoCodeAction"
+                    text="代码生成器" description="Says hello"/>
+        </group>
+    </actions>
+
+</idea-plugin>
