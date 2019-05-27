@@ -2,6 +2,7 @@ package org.micro.plugin.util;
 
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.MicroConfig;
+import org.micro.plugin.bean.TableInfo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class DatabaseUtil {
         }
     }
 
-    public Map<String, String> findTableDescription(String tableName) throws Exception {
+    public TableInfo findTableDescription(String tableName) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -42,13 +43,13 @@ public class DatabaseUtil {
             ps.setString(1, tableName);
             rs = ps.executeQuery();
             if (rs.next()) {
-                map.put("tableName", rs.getString(Constants.TABLE_NAME_KEY));
-                map.put("tableComment", rs.getString(Constants.COMMENT_KEY));
+                TableInfo tableInfo = new TableInfo();
+                tableInfo.setTableName(rs.getString(Constants.TABLE_NAME_KEY));
+                tableInfo.setTableComment(rs.getString(Constants.COMMENT_KEY));
+                return tableInfo;
             }
 
-            return map;
-        } catch (SQLException e) {
-            throw e;
+            throw new RuntimeException("没有查询到表信息");
         } finally {
             this.close(ps, rs);
         }

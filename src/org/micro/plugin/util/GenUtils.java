@@ -4,6 +4,7 @@ import org.micro.plugin.Constants;
 import org.micro.plugin.bean.ColumnEntity;
 import org.micro.plugin.bean.MicroConfig;
 import org.micro.plugin.bean.TableEntity;
+import org.micro.plugin.bean.TableInfo;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -13,6 +14,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -29,8 +32,7 @@ public class GenUtils {
     private static final String SERVICE_IMPL = "ServiceImpl.java.vm";
     private static final String CONTROLLER = "Controller.java.vm";
 
-
-    public static List<String> getTemplates() {
+    private static List<String> getTemplates() {
         List<String> templates = new ArrayList<>();
         templates.add("template/" + ENTITY);
         templates.add("template/" + MAPPER_JAVA);
@@ -41,10 +43,7 @@ public class GenUtils {
         return templates;
     }
 
-    /**
-     * 获取配置信息
-     */
-    public static Map<String, String> getConfig() {
+    private static Map<String, String> getConfig() {
         Map<String, String> map = new HashMap<>(32);
         map.put("char", "String");
         map.put("varchar", "String");
@@ -69,8 +68,14 @@ public class GenUtils {
 
     /**
      * 生成代码
+     *
+     * @param microConfig micro config
+     * @param tableInfo   table info
+     * @param columns
+     * @param projectPath
+     * @throws Exception
      */
-    public static void generatorCode(MicroConfig microConfig, Map<String, String> table,
+    public static void generatorCode(MicroConfig microConfig, TableInfo tableInfo,
                                      List<Map<String, String>> columns, String projectPath) throws Exception {
         com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
         AutoCodeConfigComponent applicationComponent = application.getComponent(AutoCodeConfigComponent.class);
@@ -79,8 +84,8 @@ public class GenUtils {
 
         //表信息
         TableEntity tableEntity = new TableEntity();
-        tableEntity.setTableName(table.get("tableName"));
-        tableEntity.setComments(table.get("tableComment"));
+        tableEntity.setTableName(tableInfo.getTableName());
+        tableEntity.setComments(tableInfo.getTableComment());
         String tableNamePrefix = microConfig.getTableNamePrefix();
 
         //表名转换成Java类名
@@ -176,11 +181,10 @@ public class GenUtils {
         map.put("columns", tableEntity.getColumns());
         map.put("package", Constants.PACKAGE_PREFIX);
         map.put("author", applicationComponent.getCreator());
-        map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
+        map.put("datetime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         map.put("hasDate", hasDate);
         map.put("hasBigDecimal", hasBigDecimal);
         map.put("pre", tableNamePrefix);
-
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
@@ -191,7 +195,7 @@ public class GenUtils {
             Template tpl = Velocity.getTemplate(template, "UTF-8");
             tpl.merge(context, sw);
 
-            String fileName = projectPath + getFileName(template, tableEntity.getClassName(), Constants.PACKAGE_PREFIX);
+            String fileName = projectPath + buildFilePathName(template, tableEntity.getClassName(), Constants.PACKAGE_PREFIX);
             File file = new File(fileName);
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
@@ -199,9 +203,7 @@ public class GenUtils {
             }
 
             try (FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
-                IOUtils.write(sw.toString(), fileOutputStream, "UTF-8");
-            } catch (IOException e) {
-                throw e;
+                IOUtils.write(sw.toString(), fileOutputStream, StandardCharsets.UTF_8);
             } finally {
                 sw.close();
             }
@@ -210,15 +212,22 @@ public class GenUtils {
 
     /**
      * 列名转换成Java属性名
+     *
+     * @param columnName column name
+     * @return java column name
      */
-    public static String columnToJava(String columnName) {
+    private static String columnToJava(String columnName) {
         return WordUtils.capitalizeFully(columnName, new char[]{'_'}).replace("_", "");
     }
 
     /**
      * 表名转换成Java类名
+     *
+     * @param tableName   table name
+     * @param tablePrefix table prefix
+     * @return java table name
      */
-    public static String tableToJava(String tableName, String tablePrefix) {
+    private static String tableToJava(String tableName, String tablePrefix) {
         if (StringUtils.isNotBlank(tablePrefix)) {
             tableName = tableName.replace(tablePrefix, "");
         }
@@ -226,22 +235,15 @@ public class GenUtils {
         return columnToJava(tableName);
     }
 
-    public static void main(String[] args) {
-        TableEntity tableEntity = new TableEntity();
-        tableEntity.setTableName("member_role");
-
-        String tablePrefix = "";
-        if (tableEntity.getTableName().indexOf("_") > 0) {
-            tablePrefix = tableEntity.getTableName().split("_")[0];
-        }
-        String pre = tablePrefix.replace("_", "").toLowerCase();
-        System.out.println(tableToJava(tableEntity.getTableName(), pre));
-    }
-
     /**
-     * 获取文件名
+     * 组装文件全路径地址
+     *
+     * @param template    template name
+     * @param className   class name
+     * @param packageName package name
+     * @return full file path name
      */
-    public static String getFileName(String template, String className, String packageName) {
+    private static String buildFilePathName(String template, String className, String packageName) {
         String javaPath = "src" + File.separator + "main" + File.separator + "java" + File.separator;
         String resourcesPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator;
         if (StringUtils.isNotBlank(packageName)) {
@@ -251,7 +253,7 @@ public class GenUtils {
             return javaPath + "entity" + File.separator + className + "Entity.java";
         }
         if (template.contains(MAPPER_JAVA)) {
-            return javaPath + "mapper" + File.separator + className + "Dao.java";
+            return javaPath + "mapper" + File.separator + className + "Mapper.java";
         }
         if (template.contains(SERVICE)) {
             return javaPath + "service" + File.separator + className + "Service.java";
