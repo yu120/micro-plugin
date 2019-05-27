@@ -1,5 +1,6 @@
 package org.micro.plugin.dialog;
 
+import org.micro.plugin.Constants;
 import org.micro.plugin.bean.ParamBean;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.micro.plugin.util.DatabaseUtil;
@@ -24,7 +25,7 @@ public class AutoCodeDialog extends JDialog {
         getRootPane().setDefaultButton(this.buttonOK);
         setSize(400, 200);
         setLocationRelativeTo(null);
-        setTitle("platform-gen");
+        setTitle(Constants.MICRO_TOOL);
 
         this.buttonOK.addActionListener(new ActionListener() {
             @Override
@@ -147,7 +148,7 @@ public class AutoCodeDialog extends JDialog {
         String message = "";
         for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
 
-            if (stackTraceElement.toString().startsWith("com.platform")) {
+            if (stackTraceElement.toString().startsWith(Constants.PACKAGE_PREFIX)) {
                 message += "类名：" + stackTraceElement.getFileName() + ";方法："
                         + stackTraceElement.getMethodName() + ";行号："
                         + stackTraceElement.getLineNumber() + ";异常信息:"

@@ -1,5 +1,6 @@
 package org.micro.plugin.util;
 
+import org.micro.plugin.Constants;
 import org.micro.plugin.bean.ColumnEntity;
 import org.micro.plugin.bean.TableEntity;
 import org.micro.plugin.component.AutoCodeConfigComponent;
@@ -150,7 +151,7 @@ public class GenUtils {
         try {
             //安装插件后 从jar文件中加载模板文件
             //设置jar包所在的位置
-            String sysRoot = GenUtils.class.getResource("").getPath().split("!/com/platform")[0];
+            String sysRoot = GenUtils.class.getResource("").getPath().split(Constants.JAR_LOCAL_PATH)[0];
 
             //设置velocity资源加载方式为jar
             properties.setProperty("resource.loader", "jar");
@@ -177,7 +178,7 @@ public class GenUtils {
         map.put("classname", tableEntity.getClassname());
         map.put("pathName", tableEntity.getClassname().toLowerCase());
         map.put("columns", tableEntity.getColumns());
-        map.put("package", "com.platform");
+        map.put("package", Constants.PACKAGE_PREFIX);
         map.put("author", applicationComponent.getCreator());
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
         map.put("hasDate", hasDate);
@@ -194,7 +195,7 @@ public class GenUtils {
             Template tpl = Velocity.getTemplate(template, "UTF-8");
             tpl.merge(context, sw);
 
-            String fileName = projectPath + getFileName(template, tableEntity.getClassName(), "com.platform");
+            String fileName = projectPath + getFileName(template, tableEntity.getClassName(), Constants.PACKAGE_PREFIX);
             File file = new File(fileName);
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();

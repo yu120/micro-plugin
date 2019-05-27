@@ -6,6 +6,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.micro.plugin.Constants;
 import org.micro.plugin.form.AutoCodeConfigForm;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ public class AutoCodeConfigComponent implements BaseComponent, Configurable, Per
     public String databaseUser = "root";
     public String databasePwd = "123456";
     public String creator = "lry";
-    public String projectPath;
+    public String projectPath = System.getProperty("user.home") + "\\temp";
     public String email = "595208882@qq.com";
     private AutoCodeConfigForm form;
 
@@ -75,7 +76,7 @@ public class AutoCodeConfigComponent implements BaseComponent, Configurable, Per
     @Nls
     @Override
     public String getDisplayName() {
-        return "platform-gen";
+        return Constants.MICRO_TOOL;
     }
 
     @Nullable

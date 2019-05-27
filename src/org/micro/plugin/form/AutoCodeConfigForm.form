@@ -31,7 +31,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="localhost:3306/platform"/>
+              <text value="localhost:3306/micro"/>
             </properties>
           </component>
         </children>

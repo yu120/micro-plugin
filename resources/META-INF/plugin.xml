@@ -29,9 +29,6 @@
     <application-components>
         <!-- add your application components here -->
         <component>
-            <implementation-class>org.micro.plugin.component.AutoCodeComponent</implementation-class>
-        </component>
-        <component>
             <implementation-class>org.micro.plugin.component.AutoCodeConfigComponent</implementation-class>
         </component>
     </application-components>

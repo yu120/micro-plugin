@@ -2,6 +2,7 @@ package org.micro.plugin.form;
 
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import org.micro.plugin.Constants;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -84,7 +85,7 @@ public class AutoCodeConfigForm implements Configurable {
     @Nls
     @Override
     public String getDisplayName() {
-        return "platform-gen";
+        return Constants.MICRO_TOOL;
     }
 
     @Nullable
