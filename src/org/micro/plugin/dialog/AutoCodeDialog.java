@@ -4,15 +4,15 @@ import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.MicroConfig;
+import org.micro.plugin.bean.TableColumnInfo;
 import org.micro.plugin.bean.TableInfo;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.micro.plugin.util.DatabaseUtil;
-import org.micro.plugin.util.GenUtils;
+import org.micro.plugin.util.GeneratorUtils;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.util.List;
-import java.util.Map;
 
 public class AutoCodeDialog extends JDialog {
 
@@ -97,9 +97,9 @@ public class AutoCodeDialog extends JDialog {
                 // 查询表信息
                 TableInfo tableInfo = dbUtil.findTableDescription(tableName);
                 // 查询列信息
-                List<Map<String, String>> columns = dbUtil.findTableColumns(tableName);
-                // 生成代码
-                GenUtils.generatorCode(microConfig, tableInfo, columns, config.getProjectPath() + "/");
+                List<TableColumnInfo> tableColumnInfos = dbUtil.findTableColumns(tableName);
+                // 生成代码: config.getProjectPath() + "/"
+                GeneratorUtils.generatorCode(microConfig, tableInfo, tableColumnInfos);
             }
 
             return true;

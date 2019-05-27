@@ -2,6 +2,7 @@ package org.micro.plugin.util;
 
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.MicroConfig;
+import org.micro.plugin.bean.TableColumnInfo;
 import org.micro.plugin.bean.TableInfo;
 
 import java.sql.*;
@@ -55,7 +56,7 @@ public class DatabaseUtil {
         }
     }
 
-    public List<Map<String, String>> findTableColumns(String tableName) throws Exception {
+    public List<TableColumnInfo> findTableColumns(String tableName) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -63,21 +64,18 @@ public class DatabaseUtil {
         try {
             ps = conn.prepareStatement(String.format(Constants.SELECT_TABLE_COLUMN_SQL, tableName));
             rs = ps.executeQuery();
-            List<Map<String, String>> columns = new ArrayList<>();
-            Map<String, String> column = null;
+            List<TableColumnInfo> tableColumnInfos = new ArrayList<>();
             while (rs.next()) {
-                column = new HashMap<>(8);
-                column.put("columnName", rs.getString("columnName"));
-                column.put("dataType", rs.getString("dataType"));
-                column.put("columnComment", rs.getString("columnComment"));
-                column.put("columnKey", rs.getString("columnKey"));
-                column.put("extra", rs.getString("extra"));
-                columns.add(column);
+                TableColumnInfo tableColumnInfo = new TableColumnInfo();
+                tableColumnInfo.setColumnName(rs.getString("columnName"));
+                tableColumnInfo.setDataType(rs.getString("dataType"));
+                tableColumnInfo.setColumnComment(rs.getString("columnComment"));
+                tableColumnInfo.setColumnKey(rs.getString("columnKey"));
+                tableColumnInfo.setExtra(rs.getString("extra"));
+                tableColumnInfos.add(tableColumnInfo);
             }
 
-            return columns;
-        } catch (SQLException e) {
-            throw e;
+            return tableColumnInfos;
         } finally {
             this.close(ps, rs);
         }

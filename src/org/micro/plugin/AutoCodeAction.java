@@ -1,4 +1,4 @@
-package org.micro.plugin.action;
+package org.micro.plugin;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
