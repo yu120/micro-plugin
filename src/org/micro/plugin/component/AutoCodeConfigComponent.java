@@ -1,4 +1,4 @@
-package com.platform.gen.component;
+package org.micro.plugin.component;
 
 import com.intellij.openapi.components.BaseComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -6,23 +6,23 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import com.platform.gen.form.AutoCodeConfigForm;
+import org.micro.plugin.form.AutoCodeConfigForm;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-@State(name = "com.platform.gen.component.AutoCodeConfigComponent",
+@State(name = "AutoCodeConfigComponent",
         storages = {@com.intellij.openapi.components.Storage(file = "$APP_CONFIG$/platform-gen.xml")})
 public class AutoCodeConfigComponent implements BaseComponent, Configurable, PersistentStateComponent<AutoCodeConfigComponent> {
 
-    public String databaseUrl = "localhost:3306/platform";
+    public String databaseUrl = "localhost:3306/micro";
     public String databaseUser = "root";
     public String databasePwd = "123456";
-    public String creator = "李鹏军";
+    public String creator = "lry";
     public String projectPath;
-    public String email = "939961241@qq.com";
+    public String email = "595208882@qq.com";
     private AutoCodeConfigForm form;
 
     @Override

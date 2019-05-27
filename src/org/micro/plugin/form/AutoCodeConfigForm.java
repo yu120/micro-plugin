@@ -1,8 +1,8 @@
-package com.platform.gen.form;
+package org.micro.plugin.form;
 
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.platform.gen.component.AutoCodeConfigComponent;
+import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 

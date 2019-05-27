@@ -1,4 +1,4 @@
-package com.platform.gen.bean;
+package org.micro.plugin.bean;
 
 import java.util.List;
 

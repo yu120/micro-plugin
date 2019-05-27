@@ -1,4 +1,4 @@
-package com.platform.gen.component;
+package org.micro.plugin.component;
 
 import com.intellij.openapi.components.BaseComponent;
 import org.jetbrains.annotations.NotNull;

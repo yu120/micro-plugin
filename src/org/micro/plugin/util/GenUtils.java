@@ -1,8 +1,8 @@
-package com.platform.gen.util;
+package org.micro.plugin.util;
 
-import com.platform.gen.bean.ColumnEntity;
-import com.platform.gen.bean.TableEntity;
-import com.platform.gen.component.AutoCodeConfigComponent;
+import org.micro.plugin.bean.ColumnEntity;
+import org.micro.plugin.bean.TableEntity;
+import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;

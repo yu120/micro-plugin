@@ -1,10 +1,10 @@
-package com.platform.gen.action;
+package org.micro.plugin.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
-import com.platform.gen.dialog.AutoCodeDialog;
+import org.micro.plugin.dialog.AutoCodeDialog;
 
 public class AutoCodeAction extends AnAction {
 

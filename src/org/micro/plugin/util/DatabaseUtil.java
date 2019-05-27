@@ -1,6 +1,6 @@
-package com.platform.gen.util;
+package org.micro.plugin.util;
 
-import com.platform.gen.bean.ParamBean;
+import org.micro.plugin.bean.ParamBean;
 
 import java.sql.*;
 import java.util.ArrayList;

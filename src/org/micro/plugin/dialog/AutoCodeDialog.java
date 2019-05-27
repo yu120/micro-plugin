@@ -1,21 +1,15 @@
-package com.platform.gen.dialog;
+package org.micro.plugin.dialog;
 
-import com.platform.gen.bean.ParamBean;
-import com.platform.gen.component.AutoCodeConfigComponent;
-import com.platform.gen.util.DatabaseUtil;
-import com.platform.gen.util.DateUtils;
-import com.platform.gen.util.GenUtils;
-import org.apache.commons.io.IOUtils;
+import org.micro.plugin.bean.ParamBean;
+import org.micro.plugin.component.AutoCodeConfigComponent;
+import org.micro.plugin.util.DatabaseUtil;
+import org.micro.plugin.util.GenUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipOutputStream;
 
 public class AutoCodeDialog extends JDialog {
     private JPanel contentPane;
@@ -135,7 +129,7 @@ public class AutoCodeDialog extends JDialog {
             return true;
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "代码生成错误！" + generateMessage(e));
+            JOptionPane.showMessageDialog(this, "代码生成错误！" + e.getMessage() + "-->" + generateMessage(e));
             e.printStackTrace();
         }
 

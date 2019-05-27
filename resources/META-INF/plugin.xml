@@ -23,24 +23,24 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- add your extensions here -->
-        <applicationConfigurable instance="com.platform.gen.form.AutoCodeConfigForm"/>
+        <applicationConfigurable instance="org.micro.plugin.form.AutoCodeConfigForm"/>
     </extensions>
 
     <application-components>
         <!-- add your application components here -->
         <component>
-            <implementation-class>com.platform.gen.component.AutoCodeComponent</implementation-class>
+            <implementation-class>org.micro.plugin.component.AutoCodeComponent</implementation-class>
         </component>
         <component>
-            <implementation-class>com.platform.gen.component.AutoCodeConfigComponent</implementation-class>
+            <implementation-class>org.micro.plugin.component.AutoCodeConfigComponent</implementation-class>
         </component>
     </application-components>
 
     <actions>
         <group id="MyPlugin.SampleMenu" text="Micro" description="Micro Service Tool">
             <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="Myplugin.Textboxes" class="com.platform.gen.action.AutoCodeAction"
-                    text="代码生成器" description="Says hello"/>
+            <action id="Myplugin.Textboxes" class="org.micro.plugin.action.AutoCodeAction"
+                    text="DB table to framework code" description="DB table to framework code"/>
         </group>
     </actions>
 

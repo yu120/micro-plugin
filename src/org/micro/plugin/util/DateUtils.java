@@ -1,4 +1,4 @@
-package com.platform.gen.util;
+package org.micro.plugin.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
