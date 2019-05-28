@@ -55,7 +55,7 @@ public class AutoCodeDialog extends JDialog {
         this.microPluginConfig = buildParam();
         if (this.microPluginConfig != null) {
             if (this.createFile(this.microPluginConfig)) {
-                JOptionPane.showMessageDialog(getContentPane(), "Success!", "Result", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(getContentPane(), "Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
             }
         }
