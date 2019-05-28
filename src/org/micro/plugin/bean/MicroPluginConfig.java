@@ -2,15 +2,16 @@ package org.micro.plugin.bean;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 
 public class MicroPluginConfig implements Serializable {
 
     private String databaseUrl = "jdbc:mysql://localhost:3306/micro?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
     private String databaseUser = "root";
     private String databasePwd = "123456";
-    private String projectPath = System.getProperty("user.home") + File.separator + "temp" + File.separator;
-    private String tableName;
+    private String projectPath = System.getProperty("user.home" ) + File.separator + "temp" + File.separator;
     private String tableNamePrefix;
+    private List<String> tableNames;
     private String createAuthor = "lry";
     private String createEmail = "595208882@qq.com";
 
@@ -20,14 +21,6 @@ public class MicroPluginConfig implements Serializable {
 
     public void setProjectPath(String projectPath) {
         this.projectPath = projectPath;
-    }
-
-    public String getTableName() {
-        return this.tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
     }
 
     public String getCreateAuthor() {
@@ -76,6 +69,14 @@ public class MicroPluginConfig implements Serializable {
 
     public void setTableNamePrefix(String tableNamePrefix) {
         this.tableNamePrefix = tableNamePrefix;
+    }
+
+    public List<String> getTableNames() {
+        return tableNames;
+    }
+
+    public void setTableNames(List<String> tableNames) {
+        this.tableNames = tableNames;
     }
 
 }

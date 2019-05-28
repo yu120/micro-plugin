@@ -69,10 +69,10 @@ public class GeneratorUtils {
      *
      * @param microPluginConfig micro config
      * @param tableInfo         table info
-     * @param columnInfos  table column info list
+     * @param columnInfoList  table column info list
      * @throws Exception
      */
-    public static void generatorCode(MicroPluginConfig microPluginConfig, TableInfo tableInfo, List<ColumnInfo> columnInfos) throws Exception {
+    public static void generatorCode(MicroPluginConfig microPluginConfig, TableInfo tableInfo, List<ColumnInfo> columnInfoList) throws Exception {
         com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
         AutoCodeConfigComponent applicationComponent = application.getComponent(AutoCodeConfigComponent.class);
         //配置信息
@@ -93,7 +93,7 @@ public class GeneratorUtils {
         List<ColumnEntity> columnEntities = new ArrayList<>();
         boolean hasDate = false;
         boolean hasBigDecimal = false;
-        for (ColumnInfo columnInfo : columnInfos) {
+        for (ColumnInfo columnInfo : columnInfoList) {
             ColumnEntity columnEntity = new ColumnEntity();
             columnEntity.setColumnName(columnInfo.getColumnName());
             columnEntity.setDataType(columnInfo.getDataType());

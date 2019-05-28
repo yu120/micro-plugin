@@ -1,18 +1,21 @@
 package org.micro.plugin.dialog;
 
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.MicroPluginConfig;
 import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
-import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.micro.plugin.util.DatabaseUtil;
 import org.micro.plugin.util.GeneratorUtils;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Auto Code Dialog
@@ -52,7 +55,7 @@ public class AutoCodeDialog extends JDialog {
         this.microPluginConfig = buildParam();
         if (this.microPluginConfig != null) {
             if (this.createFile(this.microPluginConfig)) {
-                JOptionPane.showMessageDialog(getContentPane(), "代码生成执行完毕！");
+                JOptionPane.showMessageDialog(getContentPane(), "代码生成执行完毕！" );
                 dispose();
             }
         }
@@ -63,42 +66,44 @@ public class AutoCodeDialog extends JDialog {
     }
 
     private MicroPluginConfig buildParam() {
-        if (this.paramCheck()) {
-            Application application = ApplicationManager.getApplication();
-            AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-
-            MicroPluginConfig bean = new MicroPluginConfig();
-            bean.setTableName(this.tableName.getText().trim().toUpperCase());
-            return bean;
+        MicroPluginConfig bean = new MicroPluginConfig();
+        String inputTables = this.tableName.getText().trim().toUpperCase();
+        if (StringUtils.isNotBlank(inputTables)) {
+            List<String> tableNames = new ArrayList<>();
+            String[] tempTableNameArray = inputTables.split("," );
+            Collections.addAll(tableNames, tempTableNameArray);
+            bean.setTableNames(tableNames);
         }
 
-        return null;
+        return bean;
     }
 
-    private boolean paramCheck() {
-        boolean checkResult = true;
-        if ("".equals(this.tableName.getText().trim())) {
-            JOptionPane.showMessageDialog(this, "请填写数据库表名！");
-            checkResult = false;
-        }
-
-        return checkResult;
-    }
-
-    private boolean createFile(MicroPluginConfig bean) {
-        Application application = ApplicationManager.getApplication();
-        AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-        String[] tableNames = bean.getTableName().split(",");
-        DatabaseUtil dbUtil = new DatabaseUtil(bean);
+    private boolean createFile(MicroPluginConfig tempMicroPluginConfig) {
+        DatabaseUtil dbUtil = new DatabaseUtil(tempMicroPluginConfig);
 
         try {
-            for (String tableName : tableNames) {
-                // 查询表信息
-                TableInfo tableInfo = dbUtil.findTableDescription(tableName);
-                // 查询列信息
-                List<ColumnInfo> columnInfos = dbUtil.findTableColumns(tableName);
-                // 生成代码: config.getProjectPath() + "/"
-                GeneratorUtils.generatorCode(microPluginConfig, tableInfo, columnInfos);
+            // 查询表信息
+            Map<String, TableInfo> tableInfoMap = dbUtil.queryAllTableInfo();
+            if (MapUtils.isEmpty(tableInfoMap)) {
+                JOptionPane.showMessageDialog(this, "没有表可以用于生成代码" );
+            }
+
+            // 查询列信息
+            Map<String, List<ColumnInfo>> columnInfoMap = dbUtil.queryAllTableColumns();
+
+            List<String> tempTableNames = new ArrayList<>();
+            if (CollectionUtils.isNotEmpty(tempMicroPluginConfig.getTableNames())) {
+                tempTableNames.addAll(tempMicroPluginConfig.getTableNames());
+            }
+            if (CollectionUtils.isEmpty(tempTableNames)) {
+                tempTableNames.addAll(tableInfoMap.keySet());
+            }
+
+            for (String tableName : tempTableNames) {
+                TableInfo tableInfo = tableInfoMap.get(tableName);
+                List<ColumnInfo> columnInfoList = columnInfoMap.get(tableName);
+                // 生成代码
+                GeneratorUtils.generatorCode(microPluginConfig, tableInfo, columnInfoList);
             }
 
             return true;
@@ -126,7 +131,7 @@ public class AutoCodeDialog extends JDialog {
                         + e.getMessage();
                 break;
             }
-            if (stackTraceElement.toString().startsWith("org.springframework.web.method.annotation")) {
+            if (stackTraceElement.toString().startsWith("org.springframework.web.method.annotation" )) {
                 message += "类名：" + stackTraceElement.getFileName() + ";方法："
                         + stackTraceElement.getMethodName() + ";行号："
                         + stackTraceElement.getLineNumber() + ";异常信息:"

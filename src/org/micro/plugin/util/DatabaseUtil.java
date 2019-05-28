@@ -26,56 +26,64 @@ public class DatabaseUtil {
                 return this.conn;
             }
 
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver" );
             return DriverManager.getConnection(this.bean.getDatabaseUrl(), this.bean.getDatabaseUser(), this.bean.getDatabasePwd());
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("数据库连接失败！");
+            System.out.println("数据库连接失败！" );
             throw e;
         }
     }
 
-    public TableInfo findTableDescription(String tableName) throws Exception {
+    /**
+     * 查询所有表的信息
+     */
+    public Map<String, TableInfo> queryAllTableInfo() throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         Map<String, String> map = new HashMap<>(4);
         try {
-            ps = conn.prepareStatement(Constants.SELECT_SQL);
-            ps.setString(1, tableName);
+            Map<String, TableInfo> tableInfoMap = new HashMap<>();
+
+            ps = conn.prepareStatement(Constants.SELECT_ALL_TABLE_NAME_SQL);
             rs = ps.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 TableInfo tableInfo = new TableInfo();
-                tableInfo.setTableName(rs.getString(Constants.TABLE_NAME_KEY));
-                tableInfo.setTableComment(rs.getString(Constants.COMMENT_KEY));
-                return tableInfo;
+                tableInfo.setTableName(rs.getString("table_name" ));
+                tableInfo.setTableComment(rs.getString("table_comment" ));
+                tableInfoMap.put(tableInfo.getTableName(), tableInfo);
+
             }
 
-            throw new RuntimeException("没有查询到表信息");
+            return tableInfoMap;
         } finally {
             this.close(ps, rs);
         }
     }
 
-    public List<ColumnInfo> findTableColumns(String tableName) throws Exception {
+    public Map<String, List<ColumnInfo>> queryAllTableColumns() throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            ps = conn.prepareStatement(String.format(Constants.SELECT_TABLE_COLUMN_SQL, tableName));
+            ps = conn.prepareStatement(Constants.SELECT_TABLE_COLUMN_SQL);
             rs = ps.executeQuery();
-            List<ColumnInfo> columnInfos = new ArrayList<>();
+            Map<String, List<ColumnInfo>> columnInfoMap = new HashMap<>();
             while (rs.next()) {
                 ColumnInfo columnInfo = new ColumnInfo();
-                columnInfo.setColumnName(rs.getString("columnName"));
-                columnInfo.setDataType(rs.getString("dataType"));
-                columnInfo.setColumnComment(rs.getString("columnComment"));
-                columnInfo.setColumnKey(rs.getString("columnKey"));
-                columnInfo.setExtra(rs.getString("extra"));
-                columnInfos.add(columnInfo);
+                columnInfo.setColumnName(rs.getString("column_name" ));
+                columnInfo.setDataType(rs.getString("data_type" ));
+                columnInfo.setColumnComment(rs.getString("column_comment" ));
+                columnInfo.setColumnKey(rs.getString("column_key" ));
+                columnInfo.setExtra(rs.getString("extra" ));
+
+                String tableName = rs.getString("table_name" );
+                List<ColumnInfo> columnInfoList = columnInfoMap.computeIfAbsent(tableName, k -> new ArrayList<>());
+                columnInfoList.add(columnInfo);
             }
 
-            return columnInfos;
+            return columnInfoMap;
         } finally {
             this.close(ps, rs);
         }

@@ -5,10 +5,9 @@ public class Constants {
     public static final String MICRO_SERVICE = "Micro Service";
     public static final String PACKAGE_PREFIX = "cn.micro.biz";
     public static final String JAR_LOCAL_PATH = "!/cn/micro/biz";
-    public static final String SELECT_SQL = "SELECT TABLE_NAME,table_comment COMMENT FROM information_schema.tables WHERE TABLE_NAME=?";
-    public static final String TABLE_NAME_KEY = "TABLE_NAME";
-    public static final String COMMENT_KEY = "COMMENT";
-    public static final String SELECT_TABLE_COLUMN_SQL = "select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra from information_schema.columns" +
-            " where table_name = '%s' and table_schema = (select database()) order by ordinal_position";
+    public static final String SELECT_ALL_TABLE_NAME_SQL = "SELECT table_name,table_comment " +
+            "FROM information_schema.TABLES WHERE table_schema=(SELECT DATABASE()) AND table_type='base table'";
+    public static final String SELECT_TABLE_COLUMN_SQL = "SELECT table_name,column_name,data_type,column_comment,column_key,extra " +
+            "FROM information_schema.COLUMNS WHERE table_schema = (SELECT DATABASE()) ORDER BY table_name,ordinal_position";
 
 }
