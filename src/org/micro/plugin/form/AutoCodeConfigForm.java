@@ -1,32 +1,42 @@
 package org.micro.plugin.form;
 
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.micro.plugin.Constants;
+import org.micro.plugin.bean.MicroPluginConfig;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 
+/**
+ * Auto Code Config Form
+ *
+ * @author lry
+ */
 public class AutoCodeConfigForm implements Configurable {
+
     private JPanel rootComponent;
-    private JTextField databaseUrl;
-    private JTextField databaseUser;
+
     private JLabel databaseUrlLabel;
     private JLabel databaseUserLabel;
-    private JTextField databasePwd;
-    private JTextField creator;
     private JLabel databasePwdLabel;
     private JLabel creatorLabel;
-    private JTextField projectPath;
-    private JButton projectPathSelBtn;
     private JLabel projectPathLabel;
-
-    private JTextField email;
     private JLabel emailLabel;
+
+    private JButton projectPathSelBtn;
+
+    private JTextField databaseUrl;
+    private JTextField databaseUser;
+    private JTextField databasePwd;
+    private JTextField creator;
+    private JTextField projectPath;
+    private JTextField email;
 
     public AutoCodeConfigForm() {
         super();
@@ -36,16 +46,14 @@ public class AutoCodeConfigForm implements Configurable {
         this.creatorLabel.setLabelFor(this.creator);
         this.projectPathLabel.setLabelFor(this.projectPath);
         this.emailLabel.setLabelFor(this.email);
-        this.projectPathSelBtn.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(1);
-                int i = fileChooser.showOpenDialog(AutoCodeConfigForm.this.rootComponent);
-                if (i == 0) {
-                    File file = fileChooser.getSelectedFile();
-                    AutoCodeConfigForm.this.projectPath.setText(file.getAbsolutePath());
-                }
+
+        this.projectPathSelBtn.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int i = fileChooser.showOpenDialog(AutoCodeConfigForm.this.rootComponent);
+            if (i == 0) {
+                File file = fileChooser.getSelectedFile();
+                AutoCodeConfigForm.this.projectPath.setText(file.getAbsolutePath());
             }
         });
     }
@@ -54,32 +62,36 @@ public class AutoCodeConfigForm implements Configurable {
         return this.rootComponent;
     }
 
-    public void setData(AutoCodeConfigComponent data) {
-        this.databaseUrl.setText(data.getDatabaseUrl());
-        this.databaseUser.setText(data.getDatabaseUser());
-        this.databasePwd.setText(data.getDatabasePwd());
-        this.creator.setText(data.getCreator());
-        this.projectPath.setText(data.getProjectPath());
-        this.email.setText(data.getEmail());
+    public void setData(AutoCodeConfigComponent autoCodeConfigComponent) {
+        MicroPluginConfig microPluginConfig = autoCodeConfigComponent.getMicroPluginConfig();
+        this.databaseUrl.setText(microPluginConfig.getDatabaseUrl());
+        this.databaseUser.setText(microPluginConfig.getDatabaseUser());
+        this.databasePwd.setText(microPluginConfig.getDatabasePwd());
+        this.creator.setText(microPluginConfig.getCreateAuthor());
+        this.projectPath.setText(microPluginConfig.getProjectPath());
+        this.email.setText(microPluginConfig.getCreateEmail());
     }
 
-    public void getData(AutoCodeConfigComponent data) {
-        data.setDatabaseUrl(this.databaseUrl.getText().trim());
-        data.setDatabaseUser(this.databaseUser.getText().trim());
-        data.setDatabasePwd(this.databasePwd.getText().trim());
-        data.setCreator(this.creator.getText().trim());
-        data.setProjectPath(this.projectPath.getText().trim());
-        data.setEmail(this.email.getText().trim());
+    public void getData(AutoCodeConfigComponent autoCodeConfigComponent) {
+        MicroPluginConfig microPluginConfig = new MicroPluginConfig();
+        microPluginConfig.setDatabaseUrl(this.databaseUrl.getText().trim());
+        microPluginConfig.setDatabaseUser(this.databaseUser.getText().trim());
+        microPluginConfig.setDatabasePwd(this.databasePwd.getText().trim());
+        microPluginConfig.setCreateAuthor(this.creator.getText().trim());
+        microPluginConfig.setProjectPath(this.projectPath.getText().trim());
+        microPluginConfig.setCreateEmail(this.email.getText().trim());
+        autoCodeConfigComponent.setMicroPluginConfig(microPluginConfig);
     }
 
-    public boolean isModified(AutoCodeConfigComponent data) {
-        boolean isModiT1 = (this.databaseUrl.getText() != null) && (!this.databaseUrl.getText().equals(data.getDatabaseUrl()));
-        boolean isModiT2 = (this.databaseUser.getText() != null) && (!this.databaseUser.getText().equals(data.getDatabaseUser()));
-        boolean isModiT3 = (this.databasePwd.getText() != null) && (!this.databasePwd.getText().equals(data.getDatabasePwd()));
-        boolean isModiT4 = (this.creator.getText() != null) && (!this.creator.getText().equals(data.getCreator()));
-        boolean isModiT5 = (this.projectPath.getText() != null) && (!this.projectPath.getText().equals(data.getProjectPath()));
-        boolean isModiT6 = (this.email.getText() != null) && (!this.email.getText().equals(data.getEmail()));
-        return (isModiT1) || (isModiT2) || (isModiT3) || (isModiT4) || (isModiT5) || (isModiT6);
+    public boolean isModified(AutoCodeConfigComponent autoCodeConfigComponent) {
+        MicroPluginConfig microPluginConfig = autoCodeConfigComponent.getMicroPluginConfig();
+        boolean isModifiedT1 = (this.databaseUrl.getText() != null) && (!this.databaseUrl.getText().equals(microPluginConfig.getDatabaseUrl()));
+        boolean isModifiedT2 = (this.databaseUser.getText() != null) && (!this.databaseUser.getText().equals(microPluginConfig.getDatabaseUser()));
+        boolean isModifiedT3 = (this.databasePwd.getText() != null) && (!this.databasePwd.getText().equals(microPluginConfig.getDatabasePwd()));
+        boolean isModifiedT4 = (this.creator.getText() != null) && (!this.creator.getText().equals(microPluginConfig.getCreateAuthor()));
+        boolean isModifiedT5 = (this.projectPath.getText() != null) && (!this.projectPath.getText().equals(microPluginConfig.getProjectPath()));
+        boolean isModifiedT6 = (this.email.getText() != null) && (!this.email.getText().equals(microPluginConfig.getCreateEmail()));
+        return isModifiedT1 || isModifiedT2 || isModifiedT3 || isModifiedT4 || isModifiedT5 || isModifiedT6;
     }
 
     @Nls
@@ -91,9 +103,9 @@ public class AutoCodeConfigForm implements Configurable {
     @Nullable
     @Override
     public JComponent createComponent() {
-        com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
+        Application application = ApplicationManager.getApplication();
         AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-        setData(config);
+        this.setData(config);
         return rootComponent;
     }
 
@@ -104,9 +116,9 @@ public class AutoCodeConfigForm implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
-
-        com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
+        Application application = ApplicationManager.getApplication();
         AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-        getData(config);
+        this.getData(config);
     }
+
 }

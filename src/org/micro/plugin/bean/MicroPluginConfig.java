@@ -1,17 +1,18 @@
 package org.micro.plugin.bean;
 
+import java.io.File;
 import java.io.Serializable;
 
 public class MicroPluginConfig implements Serializable {
 
-    private String databaseUrl;
-    private String databaseUser;
-    private String databasePwd;
-    private String projectPath;
+    private String databaseUrl = "jdbc:mysql://localhost:3306/micro?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
+    private String databaseUser = "root";
+    private String databasePwd = "123456";
+    private String projectPath = System.getProperty("user.home") + File.separator + "temp" + File.separator;
     private String tableName;
     private String tableNamePrefix;
-    private String createAuthor;
-    private String createEmail;
+    private String createAuthor = "lry";
+    private String createEmail = "595208882@qq.com";
 
     public String getProjectPath() {
         return this.projectPath;

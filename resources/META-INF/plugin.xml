@@ -34,7 +34,7 @@
     </application-components>
 
     <actions>
-        <group id="MyPlugin.SampleMenu" text="Micro" description="Micro Service Tool">
+        <group id="MyPlugin.SampleMenu" text="Micro Service" description="Micro Service">
             <add-to-group group-id="MainMenu" anchor="last"/>
             <action id="Myplugin.Textboxes" class="org.micro.plugin.AutoCodeAction"
                     text="DB table to framework code" description="DB table to framework code"/>

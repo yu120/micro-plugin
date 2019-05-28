@@ -14,6 +14,11 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.util.List;
 
+/**
+ * Auto Code Dialog
+ *
+ * @author lry
+ */
 public class AutoCodeDialog extends JDialog {
 
     private JPanel contentPane;
@@ -32,7 +37,7 @@ public class AutoCodeDialog extends JDialog {
 
         this.buttonOK.addActionListener(e -> AutoCodeDialog.this.onOK());
         this.buttonCancel.addActionListener(e -> AutoCodeDialog.this.onCancel());
-        setDefaultCloseOperation(0);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
@@ -40,7 +45,7 @@ public class AutoCodeDialog extends JDialog {
             }
         });
         this.contentPane.registerKeyboardAction(e -> AutoCodeDialog.this.onCancel(),
-                KeyStroke.getKeyStroke(27, 0), 1);
+                KeyStroke.getKeyStroke(27, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
@@ -63,12 +68,6 @@ public class AutoCodeDialog extends JDialog {
             AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
 
             MicroPluginConfig bean = new MicroPluginConfig();
-            bean.setDatabaseUrl(config.getDatabaseUrl());
-            bean.setDatabaseUser(config.getDatabaseUser());
-            bean.setDatabasePwd(config.getDatabasePwd());
-            bean.setCreateAuthor(config.getCreator());
-            bean.setProjectPath(config.getProjectPath());
-            bean.setCreateEmail(config.getEmail());
             bean.setTableName(this.tableName.getText().trim().toUpperCase());
             return bean;
         }

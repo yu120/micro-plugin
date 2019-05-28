@@ -8,6 +8,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.micro.plugin.Constants;
+import org.micro.plugin.bean.MicroPluginConfig;
 import org.micro.plugin.form.AutoCodeConfigForm;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -18,12 +19,7 @@ import javax.swing.*;
 @State(name = "AutoCodeConfigComponent", storages = {@Storage(file = "$APP_CONFIG$/platform-gen.xml")})
 public class AutoCodeConfigComponent implements BaseComponent, Configurable, PersistentStateComponent<AutoCodeConfigComponent> {
 
-    public String databaseUrl = "jdbc:mysql://localhost:3306/micro?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
-    public String databaseUser = "root";
-    public String databasePwd = "123456";
-    public String creator = "lry";
-    public String projectPath = System.getProperty("user.home") + "\\temp";
-    public String email = "595208882@qq.com";
+    private MicroPluginConfig microPluginConfig = new MicroPluginConfig();
     private AutoCodeConfigForm form;
 
     @Override
@@ -85,63 +81,23 @@ public class AutoCodeConfigComponent implements BaseComponent, Configurable, Per
         return null;
     }
 
-    public void setDatabaseUrl(String databaseUrl) {
-        this.databaseUrl = databaseUrl;
-    }
-
-    public String getDatabaseUrl() {
-        return this.databaseUrl;
-    }
-
-    public void setDatabaseUser(String databaseUser) {
-        this.databaseUser = databaseUser;
-    }
-
-    public String getDatabaseUser() {
-        return this.databaseUser;
-    }
-
-    public String getCreator() {
-        return this.creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public String getDatabasePwd() {
-        return this.databasePwd;
-    }
-
-    public void setDatabasePwd(String databasePwd) {
-        this.databasePwd = databasePwd;
-    }
-
-    public String getProjectPath() {
-        return this.projectPath;
-    }
-
-    public void setProjectPath(String projectPath) {
-        this.projectPath = projectPath;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Nullable
     @Override
     public AutoCodeConfigComponent getState() {
         return this;
     }
 
+    public MicroPluginConfig getMicroPluginConfig() {
+        return microPluginConfig;
+    }
+
+    public void setMicroPluginConfig(MicroPluginConfig microPluginConfig) {
+        this.microPluginConfig = microPluginConfig;
+    }
+
     @Override
     public void loadState(AutoCodeConfigComponent autoCodeConfigComponent) {
-        XmlSerializerUtil.copyBean(autoCodeConfigComponent, this);
+        XmlSerializerUtil.copyBean(autoCodeConfigComponent.microPluginConfig, microPluginConfig);
     }
 
 }

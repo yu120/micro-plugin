@@ -67,9 +67,9 @@ public class GeneratorUtils {
     /**
      * 生成代码
      *
-     * @param microPluginConfig      micro config
-     * @param tableInfo        table info
-     * @param tableColumnInfos table column info list
+     * @param microPluginConfig micro config
+     * @param tableInfo         table info
+     * @param tableColumnInfos  table column info list
      * @throws Exception
      */
     public static void generatorCode(MicroPluginConfig microPluginConfig, TableInfo tableInfo, List<TableColumnInfo> tableColumnInfos) throws Exception {
@@ -175,7 +175,7 @@ public class GeneratorUtils {
         map.put("pathName", tableEntity.getClassname().toLowerCase());
         map.put("columns", tableEntity.getColumns());
         map.put("package", Constants.PACKAGE_PREFIX);
-        map.put("author", applicationComponent.getCreator());
+        map.put("author", applicationComponent.getMicroPluginConfig().getCreateAuthor());
         map.put("datetime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         map.put("hasDate", hasDate);
         map.put("hasBigDecimal", hasBigDecimal);
