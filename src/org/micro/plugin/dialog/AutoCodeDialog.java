@@ -55,7 +55,7 @@ public class AutoCodeDialog extends JDialog {
         this.microPluginConfig = buildParam();
         if (this.microPluginConfig != null) {
             if (this.createFile(this.microPluginConfig)) {
-                JOptionPane.showMessageDialog(getContentPane(), "代码生成执行完毕！" );
+                JOptionPane.showMessageDialog(getContentPane(), "Success!", "Result", JOptionPane.WARNING_MESSAGE);
                 dispose();
             }
         }
@@ -70,7 +70,7 @@ public class AutoCodeDialog extends JDialog {
         String inputTables = this.tableName.getText().trim().toUpperCase();
         if (StringUtils.isNotBlank(inputTables)) {
             List<String> tableNames = new ArrayList<>();
-            String[] tempTableNameArray = inputTables.split("," );
+            String[] tempTableNameArray = inputTables.split(",");
             Collections.addAll(tableNames, tempTableNameArray);
             bean.setTableNames(tableNames);
         }
@@ -85,7 +85,7 @@ public class AutoCodeDialog extends JDialog {
             // 查询表信息
             Map<String, TableInfo> tableInfoMap = dbUtil.queryAllTableInfo();
             if (MapUtils.isEmpty(tableInfoMap)) {
-                JOptionPane.showMessageDialog(this, "没有表可以用于生成代码" );
+                JOptionPane.showMessageDialog(this, "没有表可以用于生成代码");
             }
 
             // 查询列信息
@@ -108,7 +108,7 @@ public class AutoCodeDialog extends JDialog {
 
             return true;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "代码生成错误！" + this.generateMessage(e));
+            JOptionPane.showMessageDialog(this, "Error: " + this.generateMessage(e));
             e.printStackTrace();
         }
 
@@ -131,7 +131,7 @@ public class AutoCodeDialog extends JDialog {
                         + e.getMessage();
                 break;
             }
-            if (stackTraceElement.toString().startsWith("org.springframework.web.method.annotation" )) {
+            if (stackTraceElement.toString().startsWith("org.springframework.web.method.annotation")) {
                 message += "类名：" + stackTraceElement.getFileName() + ";方法："
                         + stackTraceElement.getMethodName() + ";行号："
                         + stackTraceElement.getLineNumber() + ";异常信息:"
