@@ -12,8 +12,9 @@ import java.util.Date;
 #end
 
 /**
- * ${comments} Entity
- *
+ * ${className} Entity
+ * <p>
+ * Tip: ${comments}
  * @author ${author}
  * @date ${datetime}
  */

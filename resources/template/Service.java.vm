@@ -4,8 +4,9 @@ import cn.micro.biz.commons.mybatis.extension.IMicroService;
 import ${package}.entity.${className};
 
 /**
- * ${comments} Service Interface
- *
+ * ${className} Service Interface
+ * <p>
+ * Tip: ${comments}
  * @author ${author}
  * @date ${datetime}
  */

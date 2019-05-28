@@ -7,8 +7,9 @@ import ${package}.service.${className}Service;
 import org.springframework.stereotype.Service;
 
 /**
- * ${comments} Service Implements
- *
+ * ${className} Service Implements
+ * <p>
+ * Tip: ${comments}
  * @author ${author}
  * @date ${datetime}
  */

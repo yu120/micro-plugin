@@ -8,13 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ${comments} Controller
- *
+ * ${className} Controller
+ * <p>
+ * Tip: ${comments}
  * @author ${author}
  * @date ${datetime}
  */
 @RestController
-@RequestMapping("${pre}/${pathName}")
+@RequestMapping("${pathName}" )
 public class ${className}Controller {
 
     @Autowired
