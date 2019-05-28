@@ -1,8 +1,8 @@
 <idea-plugin>
     <id>org.micro.plugin</id>
-    <name>Micro</name>
+    <name>Micro Service</name>
     <version>1.0.0</version>
-    <vendor email="595208882@qq.com" url="http://www.yourcompany.com">Micro</vendor>
+    <vendor email="595208882@qq.com" url="http://www.yourcompany.com">Micro Service</vendor>
 
     <description><![CDATA[The Micro Service Framework.<br>]]></description>
 
