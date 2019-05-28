@@ -1,6 +1,5 @@
 package ${package}.controller;
 
-import ${package}.entity.${className}Entity;
 import ${package}.service.${className}Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,22 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ${comments}Controller
+ * ${comments} Controller
  *
  * @author ${author}
  * @date ${datetime}
  */
 @RestController
 @RequestMapping("${pre}/${pathName}")
-public class ${className}Controller extends AbstractController {
+public class ${className}Controller {
 
     @Autowired
     private ${className}Service ${classname}Service;
-
-    @RequestMapping("/queryById")
-    public ${className} queryById(@RequestParam("id") ${pk.attrType} id) {
-        ${className}Entity entity = ${classname}Service.getOne(id);
-        return entity;
-    }
 
 }

@@ -1,10 +1,9 @@
 package ${package}.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
+import cn.micro.biz.commons.mybatis.entity.MicroEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
+import lombok.*;
 
-import java.io.Serializable;
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
 #end
@@ -13,28 +12,34 @@ import java.util.Date;
 #end
 
 /**
- * ${comments}实体
- * 表名 ${tableName}
+ * ${comments} Entity
  *
  * @author ${author}
  * @date ${datetime}
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
-public class ${className}Entity implements Serializable {
+public class ${className} extends MicroEntity<${className}> {
+
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-#if($column.columnName == $pk.columnName)
+#if($column.columnName != "id"&&
+    $column.columnName != "created"&&
+    $column.columnName != "creator"&&
+    $column.columnName != "edited"&&
+    $column.columnName != "editor"&&
+    $column.columnName != "deleted"&&
+    $column.columnName != "tenant_id")
     /**
      * $column.comments
      */
-    @TableId
     private $column.attrType $column.attrname;
-#else
-    /**
-     * $column.comments
-     */
-    private $column.attrType $column.attrname;
-#end#end
+#end
+#end
+
 }

@@ -1,13 +1,8 @@
-package ${package}.dao;
+package ${package}.mapper;
 
+import ${package}.entity.${className};
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import ${package}.entity.${className}Entity;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * ${comments} Mapper
@@ -16,22 +11,6 @@ import java.util.Map;
  * @date ${datetime}
  */
 @Mapper
-public interface ${className}Mapper extends BaseMapper<${className}Entity> {
+public interface ${className}Mapper extends BaseMapper<${className}> {
 
-    /**
-     * 查询所有列表
-     *
-     * @param params 查询参数
-     * @return List
-     */
-    List<${className}Entity> queryAll(@Param("params") Map<String, Object> params);
-
-    /**
-     * 自定义分页查询
-     *
-     * @param page   分页参数
-     * @param params 查询参数
-     * @return List
-     */
-    List<${className}Entity> select${className}Page(IPage page, @Param("params") Map<String, Object> params);
 }
