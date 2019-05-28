@@ -21,7 +21,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="DB URI：          "/>
+              <text value="DB URI：            "/>
             </properties>
           </component>
           <component id="9d7d0" class="javax.swing.JTextField" binding="databaseUrl">
@@ -49,7 +49,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="DB Password： "/>
+              <text value="DB Password：   "/>
             </properties>
           </component>
           <component id="1b90" class="javax.swing.JTextField" binding="databasePwd">
@@ -77,7 +77,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="DB Username："/>
+              <text value="DB Username：  "/>
             </properties>
           </component>
           <component id="b9303" class="javax.swing.JTextField" binding="databaseUser">
@@ -105,7 +105,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Code Author： "/>
+              <text value="Code Author：    "/>
             </properties>
           </component>
           <component id="2a5d9" class="javax.swing.JTextField" binding="creator">
@@ -133,7 +133,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Code Path：     "/>
+              <text value="Output Path：     "/>
             </properties>
           </component>
           <component id="e2ccf" class="javax.swing.JTextField" binding="projectPath">
@@ -169,7 +169,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Code Email：   "/>
+              <text value="Code Email：      "/>
             </properties>
           </component>
           <component id="32bed" class="javax.swing.JTextField" binding="email">
