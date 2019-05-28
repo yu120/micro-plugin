@@ -69,10 +69,10 @@ public class GeneratorUtils {
      *
      * @param microPluginConfig micro config
      * @param tableInfo         table info
-     * @param tableColumnInfos  table column info list
+     * @param columnInfos  table column info list
      * @throws Exception
      */
-    public static void generatorCode(MicroPluginConfig microPluginConfig, TableInfo tableInfo, List<TableColumnInfo> tableColumnInfos) throws Exception {
+    public static void generatorCode(MicroPluginConfig microPluginConfig, TableInfo tableInfo, List<ColumnInfo> columnInfos) throws Exception {
         com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
         AutoCodeConfigComponent applicationComponent = application.getComponent(AutoCodeConfigComponent.class);
         //配置信息
@@ -93,12 +93,12 @@ public class GeneratorUtils {
         List<ColumnEntity> columnEntities = new ArrayList<>();
         boolean hasDate = false;
         boolean hasBigDecimal = false;
-        for (TableColumnInfo tableColumnInfo : tableColumnInfos) {
+        for (ColumnInfo columnInfo : columnInfos) {
             ColumnEntity columnEntity = new ColumnEntity();
-            columnEntity.setColumnName(tableColumnInfo.getColumnName());
-            columnEntity.setDataType(tableColumnInfo.getDataType());
-            columnEntity.setComments(tableColumnInfo.getColumnComment());
-            columnEntity.setExtra(tableColumnInfo.getExtra());
+            columnEntity.setColumnName(columnInfo.getColumnName());
+            columnEntity.setDataType(columnInfo.getDataType());
+            columnEntity.setComments(columnInfo.getColumnComment());
+            columnEntity.setExtra(columnInfo.getExtra());
 
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
@@ -117,7 +117,7 @@ public class GeneratorUtils {
             }
 
             // 是否主键
-            if (("PRI".equalsIgnoreCase(tableColumnInfo.getColumnKey()) && tableEntity.getPk() == null)) {
+            if (("PRI".equalsIgnoreCase(columnInfo.getColumnKey()) && tableEntity.getPk() == null)) {
                 tableEntity.setPk(columnEntity);
             }
 

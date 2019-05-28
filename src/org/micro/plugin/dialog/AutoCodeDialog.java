@@ -4,7 +4,7 @@ import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.MicroPluginConfig;
-import org.micro.plugin.bean.TableColumnInfo;
+import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.micro.plugin.util.DatabaseUtil;
@@ -96,9 +96,9 @@ public class AutoCodeDialog extends JDialog {
                 // 查询表信息
                 TableInfo tableInfo = dbUtil.findTableDescription(tableName);
                 // 查询列信息
-                List<TableColumnInfo> tableColumnInfos = dbUtil.findTableColumns(tableName);
+                List<ColumnInfo> columnInfos = dbUtil.findTableColumns(tableName);
                 // 生成代码: config.getProjectPath() + "/"
-                GeneratorUtils.generatorCode(microPluginConfig, tableInfo, tableColumnInfos);
+                GeneratorUtils.generatorCode(microPluginConfig, tableInfo, columnInfos);
             }
 
             return true;

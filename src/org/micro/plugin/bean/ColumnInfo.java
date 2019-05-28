@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author lry
  */
-public class TableColumnInfo implements Serializable {
+public class ColumnInfo implements Serializable {
 
     private String columnName;
     private String dataType;

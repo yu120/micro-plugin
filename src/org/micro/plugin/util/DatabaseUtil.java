@@ -2,7 +2,7 @@ package org.micro.plugin.util;
 
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.MicroPluginConfig;
-import org.micro.plugin.bean.TableColumnInfo;
+import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
 
 import java.sql.*;
@@ -56,7 +56,7 @@ public class DatabaseUtil {
         }
     }
 
-    public List<TableColumnInfo> findTableColumns(String tableName) throws Exception {
+    public List<ColumnInfo> findTableColumns(String tableName) throws Exception {
         Connection conn = getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -64,18 +64,18 @@ public class DatabaseUtil {
         try {
             ps = conn.prepareStatement(String.format(Constants.SELECT_TABLE_COLUMN_SQL, tableName));
             rs = ps.executeQuery();
-            List<TableColumnInfo> tableColumnInfos = new ArrayList<>();
+            List<ColumnInfo> columnInfos = new ArrayList<>();
             while (rs.next()) {
-                TableColumnInfo tableColumnInfo = new TableColumnInfo();
-                tableColumnInfo.setColumnName(rs.getString("columnName"));
-                tableColumnInfo.setDataType(rs.getString("dataType"));
-                tableColumnInfo.setColumnComment(rs.getString("columnComment"));
-                tableColumnInfo.setColumnKey(rs.getString("columnKey"));
-                tableColumnInfo.setExtra(rs.getString("extra"));
-                tableColumnInfos.add(tableColumnInfo);
+                ColumnInfo columnInfo = new ColumnInfo();
+                columnInfo.setColumnName(rs.getString("columnName"));
+                columnInfo.setDataType(rs.getString("dataType"));
+                columnInfo.setColumnComment(rs.getString("columnComment"));
+                columnInfo.setColumnKey(rs.getString("columnKey"));
+                columnInfo.setExtra(rs.getString("extra"));
+                columnInfos.add(columnInfo);
             }
 
-            return tableColumnInfos;
+            return columnInfos;
         } finally {
             this.close(ps, rs);
         }
