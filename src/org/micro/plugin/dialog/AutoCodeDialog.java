@@ -34,7 +34,7 @@ public class AutoCodeDialog extends JDialog {
         setContentPane(this.contentPane);
         setModal(true);
         getRootPane().setDefaultButton(this.buttonOK);
-        setSize(400, 200);
+        setSize(700, 300);
         setLocationRelativeTo(null);
         setTitle(Constants.MICRO_SERVICE);
 
