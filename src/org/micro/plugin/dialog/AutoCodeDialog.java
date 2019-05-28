@@ -3,7 +3,7 @@ package org.micro.plugin.dialog;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import org.micro.plugin.Constants;
-import org.micro.plugin.bean.MicroConfig;
+import org.micro.plugin.bean.MicroPluginConfig;
 import org.micro.plugin.bean.TableColumnInfo;
 import org.micro.plugin.bean.TableInfo;
 import org.micro.plugin.component.AutoCodeConfigComponent;
@@ -20,7 +20,7 @@ public class AutoCodeDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField tableName;
-    private MicroConfig microConfig = null;
+    private MicroPluginConfig microPluginConfig = null;
 
     public AutoCodeDialog() {
         setContentPane(this.contentPane);
@@ -44,9 +44,9 @@ public class AutoCodeDialog extends JDialog {
     }
 
     private void onOK() {
-        this.microConfig = buildParam();
-        if (this.microConfig != null) {
-            if (this.createFile(this.microConfig)) {
+        this.microPluginConfig = buildParam();
+        if (this.microPluginConfig != null) {
+            if (this.createFile(this.microPluginConfig)) {
                 JOptionPane.showMessageDialog(getContentPane(), "代码生成执行完毕！");
                 dispose();
             }
@@ -57,12 +57,12 @@ public class AutoCodeDialog extends JDialog {
         dispose();
     }
 
-    private MicroConfig buildParam() {
+    private MicroPluginConfig buildParam() {
         if (this.paramCheck()) {
             Application application = ApplicationManager.getApplication();
             AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
 
-            MicroConfig bean = new MicroConfig();
+            MicroPluginConfig bean = new MicroPluginConfig();
             bean.setDatabaseUrl(config.getDatabaseUrl());
             bean.setDatabaseUser(config.getDatabaseUser());
             bean.setDatabasePwd(config.getDatabasePwd());
@@ -86,7 +86,7 @@ public class AutoCodeDialog extends JDialog {
         return checkResult;
     }
 
-    private boolean createFile(MicroConfig bean) {
+    private boolean createFile(MicroPluginConfig bean) {
         Application application = ApplicationManager.getApplication();
         AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
         String[] tableNames = bean.getTableName().split(",");
@@ -99,7 +99,7 @@ public class AutoCodeDialog extends JDialog {
                 // 查询列信息
                 List<TableColumnInfo> tableColumnInfos = dbUtil.findTableColumns(tableName);
                 // 生成代码: config.getProjectPath() + "/"
-                GeneratorUtils.generatorCode(microConfig, tableInfo, tableColumnInfos);
+                GeneratorUtils.generatorCode(microPluginConfig, tableInfo, tableColumnInfos);
             }
 
             return true;

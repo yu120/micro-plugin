@@ -2,7 +2,7 @@ package org.micro.plugin.bean;
 
 import java.io.Serializable;
 
-public class MicroConfig implements Serializable {
+public class MicroPluginConfig implements Serializable {
 
     private String databaseUrl;
     private String databaseUser;

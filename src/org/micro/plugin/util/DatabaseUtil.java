@@ -1,7 +1,7 @@
 package org.micro.plugin.util;
 
 import org.micro.plugin.Constants;
-import org.micro.plugin.bean.MicroConfig;
+import org.micro.plugin.bean.MicroPluginConfig;
 import org.micro.plugin.bean.TableColumnInfo;
 import org.micro.plugin.bean.TableInfo;
 
@@ -14,9 +14,9 @@ import java.util.Map;
 public class DatabaseUtil {
 
     private Connection conn;
-    private MicroConfig bean;
+    private MicroPluginConfig bean;
 
-    public DatabaseUtil(MicroConfig bean) {
+    public DatabaseUtil(MicroPluginConfig bean) {
         this.bean = bean;
     }
 

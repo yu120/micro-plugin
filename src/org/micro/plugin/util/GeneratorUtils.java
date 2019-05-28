@@ -6,7 +6,6 @@ import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
@@ -22,6 +21,8 @@ import java.util.*;
  */
 public class GeneratorUtils {
 
+    private static final String TEMPLATE = "template/";
+
     private static final String ENTITY = "Entity.java.vm";
     private static final String MAPPER_JAVA = "Mapper.java.vm";
     private static final String MAPPER_XML = "Mapper.xml.vm";
@@ -31,12 +32,12 @@ public class GeneratorUtils {
 
     private static List<String> getTemplates() {
         List<String> templates = new ArrayList<>();
-        templates.add("template/" + ENTITY);
-        templates.add("template/" + MAPPER_JAVA);
-        templates.add("template/" + MAPPER_XML);
-        templates.add("template/" + SERVICE);
-        templates.add("template/" + SERVICE_IMPL);
-        templates.add("template/" + CONTROLLER);
+        templates.add(ENTITY);
+        templates.add(MAPPER_JAVA);
+        templates.add(MAPPER_XML);
+        templates.add(SERVICE);
+        templates.add(SERVICE_IMPL);
+        templates.add(CONTROLLER);
         return templates;
     }
 
@@ -66,12 +67,12 @@ public class GeneratorUtils {
     /**
      * 生成代码
      *
-     * @param microConfig      micro config
+     * @param microPluginConfig      micro config
      * @param tableInfo        table info
      * @param tableColumnInfos table column info list
      * @throws Exception
      */
-    public static void generatorCode(MicroConfig microConfig, TableInfo tableInfo, List<TableColumnInfo> tableColumnInfos) throws Exception {
+    public static void generatorCode(MicroPluginConfig microPluginConfig, TableInfo tableInfo, List<TableColumnInfo> tableColumnInfos) throws Exception {
         com.intellij.openapi.application.Application application = com.intellij.openapi.application.ApplicationManager.getApplication();
         AutoCodeConfigComponent applicationComponent = application.getComponent(AutoCodeConfigComponent.class);
         //配置信息
@@ -81,7 +82,7 @@ public class GeneratorUtils {
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(tableInfo.getTableName());
         tableEntity.setComments(tableInfo.getTableComment());
-        String tableNamePrefix = microConfig.getTableNamePrefix();
+        String tableNamePrefix = microPluginConfig.getTableNamePrefix();
 
         //表名转换成Java类名
         String className = tableToJava(tableEntity.getTableName(), tableNamePrefix);
@@ -185,8 +186,8 @@ public class GeneratorUtils {
         List<String> templates = getTemplates();
         for (String template : templates) {
             try (StringWriter stringWriter = new StringWriter()) {
-                Velocity.getTemplate(template, "UTF-8").merge(context, stringWriter);
-                String fileName = microConfig.getProjectPath() + buildFilePathName(template, tableEntity.getClassName(), Constants.PACKAGE_PREFIX);
+                Velocity.getTemplate(TEMPLATE + template, StandardCharsets.UTF_8.name()).merge(context, stringWriter);
+                String fileName = microPluginConfig.getProjectPath() + buildFilePathName(template, tableEntity.getClassName(), Constants.PACKAGE_PREFIX);
                 File file = new File(fileName);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
