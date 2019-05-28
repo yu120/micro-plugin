@@ -242,7 +242,7 @@ public class GeneratorUtils {
 
         switch (template) {
             case ENTITY:
-                return javaPath + "entity" + File.separator + className + "Entity.java";
+                return javaPath + "entity" + File.separator + className + ".java";
             case MAPPER_JAVA:
                 return javaPath + "mapper" + File.separator + className + "Mapper.java";
             case SERVICE:
