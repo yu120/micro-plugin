@@ -5,7 +5,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.micro.plugin.MainAction;
-import org.micro.plugin.bean.PluginConfig;
+import org.micro.plugin.model.PluginConfig;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 

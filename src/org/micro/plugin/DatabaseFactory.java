@@ -1,8 +1,8 @@
 package org.micro.plugin;
 
-import org.micro.plugin.bean.PluginConfig;
-import org.micro.plugin.bean.ColumnInfo;
-import org.micro.plugin.bean.TableInfo;
+import org.micro.plugin.model.PluginConfig;
+import org.micro.plugin.model.ColumnInfo;
+import org.micro.plugin.model.TableInfo;
 
 import java.sql.*;
 import java.util.ArrayList;

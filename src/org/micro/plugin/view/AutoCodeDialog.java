@@ -7,9 +7,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.micro.plugin.MainAction;
-import org.micro.plugin.bean.PluginConfig;
-import org.micro.plugin.bean.ColumnInfo;
-import org.micro.plugin.bean.TableInfo;
+import org.micro.plugin.model.PluginConfig;
+import org.micro.plugin.model.ColumnInfo;
+import org.micro.plugin.model.TableInfo;
 import org.micro.plugin.DatabaseFactory;
 import org.micro.plugin.GeneratorFactory;
 

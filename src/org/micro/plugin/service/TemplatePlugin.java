@@ -1,7 +1,7 @@
 package org.micro.plugin.service;
 
-import org.micro.plugin.bean.PluginConfig;
-import org.micro.plugin.bean.TableEntity;
+import org.micro.plugin.model.PluginConfig;
+import org.micro.plugin.model.TableModel;
 
 /**
  * Template Plugin
@@ -15,9 +15,9 @@ public interface TemplatePlugin {
      *
      * @param vmTemplate   {@link VMTemplate}
      * @param pluginConfig {@link PluginConfig}
-     * @param tableEntity  table entity
+     * @param tableModel  table entity
      * @return full file path name
      */
-    String buildPath(VMTemplate vmTemplate, PluginConfig pluginConfig, TableEntity tableEntity);
+    String buildPath(VMTemplate vmTemplate, PluginConfig pluginConfig, TableModel tableModel);
 
 }

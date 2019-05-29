@@ -1,7 +1,7 @@
 package org.micro.plugin.service.support;
 
-import org.micro.plugin.bean.PluginConfig;
-import org.micro.plugin.bean.TableEntity;
+import org.micro.plugin.model.PluginConfig;
+import org.micro.plugin.model.TableModel;
 import org.micro.plugin.service.TemplatePlugin;
 import org.micro.plugin.service.VMTemplate;
 
@@ -16,13 +16,13 @@ import java.io.File;
 public class EntityTemplatePlugin implements TemplatePlugin {
 
     @Override
-    public String buildPath(VMTemplate vmTemplate, PluginConfig pluginConfig, TableEntity tableEntity) {
+    public String buildPath(VMTemplate vmTemplate, PluginConfig pluginConfig, TableModel tableModel) {
         String entityPackage = pluginConfig.getEntityPackagePrefix().replace(".", File.separator);
         return "src" + File.separator +
                 "main" + File.separator +
                 "java" + File.separator +
                 entityPackage + File.separator +
-                tableEntity.getClassName() + vmTemplate.suffix();
+                tableModel.getClassName() + vmTemplate.suffix();
     }
 
 }

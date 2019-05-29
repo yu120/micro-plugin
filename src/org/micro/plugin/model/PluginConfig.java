@@ -1,4 +1,4 @@
-package org.micro.plugin.bean;
+package org.micro.plugin.model;
 
 import java.io.File;
 import java.io.Serializable;

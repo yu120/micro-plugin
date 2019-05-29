@@ -1,4 +1,4 @@
-package org.micro.plugin.bean;
+package org.micro.plugin.model;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author lry
  */
-public class ColumnEntity implements Serializable {
+public class ColumnModel implements Serializable {
 
     private String columnName;
     private String dataType;

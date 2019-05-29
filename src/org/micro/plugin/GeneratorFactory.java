@@ -2,7 +2,7 @@ package org.micro.plugin;
 
 import org.micro.plugin.service.TemplatePluginFactory;
 import org.micro.plugin.service.VMTemplate;
-import org.micro.plugin.bean.*;
+import org.micro.plugin.model.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -56,10 +56,10 @@ public enum GeneratorFactory {
      */
     public void generateCode(PluginConfig pluginConfig, TableInfo tableInfo, List<ColumnInfo> columnInfoList) throws Exception {
         // 解析表信息
-        TableEntity tableEntity = this.parseTable(pluginConfig, tableInfo, columnInfoList);
+        TableModel tableModel = this.parseTable(pluginConfig, tableInfo, columnInfoList);
 
         // 封装模板数据
-        Map<String, Object> parameters = this.buildTemplateParameters(tableEntity, pluginConfig);
+        Map<String, Object> parameters = this.buildTemplateParameters(tableModel, pluginConfig);
         VelocityContext velocityContext = new VelocityContext(parameters);
 
         // 获取模板列表
@@ -72,7 +72,7 @@ public enum GeneratorFactory {
             if (!filePathName.endsWith(File.separator)) {
                 filePathName += File.separator;
             }
-            filePathName += templatePlugin.buildPath(vmTemplate, pluginConfig, tableEntity);
+            filePathName += templatePlugin.buildPath(vmTemplate, pluginConfig, tableModel);
 
             try (StringWriter stringWriter = new StringWriter()) {
                 Velocity.getTemplate("template/" + vmTemplate.value(),
@@ -91,57 +91,57 @@ public enum GeneratorFactory {
         }
     }
 
-    private TableEntity parseTable(PluginConfig pluginConfig, TableInfo tableInfo, List<ColumnInfo> columnInfoList) {
+    private TableModel parseTable(PluginConfig pluginConfig, TableInfo tableInfo, List<ColumnInfo> columnInfoList) {
         // 表信息
-        TableEntity tableEntity = new TableEntity();
-        tableEntity.setTableName(tableInfo.getTableName());
-        tableEntity.setComments(tableInfo.getTableComment());
+        TableModel tableModel = new TableModel();
+        tableModel.setTableName(tableInfo.getTableName());
+        tableModel.setComments(tableInfo.getTableComment());
         String tableNamePrefix = pluginConfig.getTableNamePrefix();
 
         // 表名转换成Java类名
-        String className = tableToJava(tableEntity.getTableName(), tableNamePrefix);
-        tableEntity.setClassName(className);
-        tableEntity.setClassname(StringUtils.uncapitalize(className));
+        String className = tableToJava(tableModel.getTableName(), tableNamePrefix);
+        tableModel.setClassName(className);
+        tableModel.setClassname(StringUtils.uncapitalize(className));
 
         // 列信息
-        List<ColumnEntity> columnEntities = new ArrayList<>();
+        List<ColumnModel> columnEntities = new ArrayList<>();
         for (ColumnInfo columnInfo : columnInfoList) {
-            ColumnEntity columnEntity = new ColumnEntity();
-            columnEntity.setColumnName(columnInfo.getColumnName());
-            columnEntity.setDataType(columnInfo.getDataType());
-            columnEntity.setComments(columnInfo.getColumnComment());
-            columnEntity.setExtra(columnInfo.getExtra());
+            ColumnModel columnModel = new ColumnModel();
+            columnModel.setColumnName(columnInfo.getColumnName());
+            columnModel.setDataType(columnInfo.getDataType());
+            columnModel.setComments(columnInfo.getColumnComment());
+            columnModel.setExtra(columnInfo.getExtra());
 
             // 列名转换成Java属性名
-            String attrName = columnToJava(columnEntity.getColumnName());
-            columnEntity.setAttrName(attrName);
-            columnEntity.setAttrname(StringUtils.uncapitalize(attrName));
+            String attrName = columnToJava(columnModel.getColumnName());
+            columnModel.setAttrName(attrName);
+            columnModel.setAttrname(StringUtils.uncapitalize(attrName));
 
             // 列的数据类型，转换成Java类型
-            String javaType = DataTypeEnum.parseType(columnEntity.getDataType().split("\\(")[0]);
-            columnEntity.setJavaType(javaType);
+            String javaType = DataTypeEnum.parseType(columnModel.getDataType().split("\\(")[0]);
+            columnModel.setJavaType(javaType);
             if ("Date".equals(javaType)) {
-                tableEntity.setHasDate(true);
+                tableModel.setHasDate(true);
             }
             if ("BigDecimal".equals(javaType)) {
-                tableEntity.setHasBigDecimal(true);
+                tableModel.setHasBigDecimal(true);
             }
 
             // 是否主键
-            if (("PRI".equalsIgnoreCase(columnInfo.getColumnKey()) && tableEntity.getPk() == null)) {
-                tableEntity.setPk(columnEntity);
+            if (("PRI".equalsIgnoreCase(columnInfo.getColumnKey()) && tableModel.getPk() == null)) {
+                tableModel.setPk(columnModel);
             }
-            columnEntities.add(columnEntity);
+            columnEntities.add(columnModel);
         }
-        tableEntity.setColumns(columnEntities);
+        tableModel.setColumns(columnEntities);
 
         // 若没主键
-        if (tableEntity.getPk() == null) {
+        if (tableModel.getPk() == null) {
             // 设置columnName为id的为主键
             boolean flag = true;
-            for (ColumnEntity columnEntity : tableEntity.getColumns()) {
-                if ("id".equals(columnEntity.getAttrname())) {
-                    tableEntity.setPk(columnEntity);
+            for (ColumnModel columnModel : tableModel.getColumns()) {
+                if ("id".equals(columnModel.getAttrname())) {
+                    tableModel.setPk(columnModel);
                     flag = false;
                     break;
                 }
@@ -149,33 +149,33 @@ public enum GeneratorFactory {
 
             // 若无id字段则第一个字段为主键
             if (flag) {
-                tableEntity.setPk(tableEntity.getColumns().get(0));
+                tableModel.setPk(tableModel.getColumns().get(0));
             }
         }
 
-        return tableEntity;
+        return tableModel;
     }
 
     /**
      * 封装模板数据
      *
-     * @param tableEntity  {@link TableEntity}
+     * @param tableModel  {@link TableModel}
      * @param pluginConfig {@link PluginConfig}
      * @return template need parameters
      */
-    private Map<String, Object> buildTemplateParameters(TableEntity tableEntity, PluginConfig pluginConfig) {
+    private Map<String, Object> buildTemplateParameters(TableModel tableModel, PluginConfig pluginConfig) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("tableName", tableEntity.getTableName());
-        parameters.put("comments", tableEntity.getComments());
-        parameters.put("pk", tableEntity.getPk());
-        parameters.put("className", tableEntity.getClassName());
-        parameters.put("classname", tableEntity.getClassname());
-        parameters.put("pathName", tableEntity.getClassname().toLowerCase());
-        parameters.put("columns", tableEntity.getColumns());
+        parameters.put("tableName", tableModel.getTableName());
+        parameters.put("comments", tableModel.getComments());
+        parameters.put("pk", tableModel.getPk());
+        parameters.put("className", tableModel.getClassName());
+        parameters.put("classname", tableModel.getClassname());
+        parameters.put("pathName", tableModel.getClassname().toLowerCase());
+        parameters.put("columns", tableModel.getColumns());
         parameters.put("author", pluginConfig.getCreateAuthor());
         parameters.put("datetime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        parameters.put("hasDate", tableEntity.isHasDate());
-        parameters.put("hasBigDecimal", tableEntity.isHasBigDecimal());
+        parameters.put("hasDate", tableModel.isHasDate());
+        parameters.put("hasBigDecimal", tableModel.isHasBigDecimal());
 
         parameters.put("entityPackage", pluginConfig.getEntityPackagePrefix());
         parameters.put("mapperPackage", pluginConfig.getMapperPackagePrefix());

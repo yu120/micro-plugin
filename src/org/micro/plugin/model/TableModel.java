@@ -1,4 +1,4 @@
-package org.micro.plugin.bean;
+package org.micro.plugin.model;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,15 +8,15 @@ import java.util.List;
  *
  * @author lry
  */
-public class TableEntity implements Serializable {
+public class TableModel implements Serializable {
 
     private String tableName;
     private String comments;
-    private ColumnEntity pk;
+    private ColumnModel pk;
     /**
      * 表的列名(不包含主键)
      */
-    private List<ColumnEntity> columns;
+    private List<ColumnModel> columns;
 
     /**
      * 类名(第一个字母大写)，如：sys_user => SysUser
@@ -46,19 +46,19 @@ public class TableEntity implements Serializable {
         this.comments = comments;
     }
 
-    public ColumnEntity getPk() {
+    public ColumnModel getPk() {
         return pk;
     }
 
-    public void setPk(ColumnEntity pk) {
+    public void setPk(ColumnModel pk) {
         this.pk = pk;
     }
 
-    public List<ColumnEntity> getColumns() {
+    public List<ColumnModel> getColumns() {
         return columns;
     }
 
-    public void setColumns(List<ColumnEntity> columns) {
+    public void setColumns(List<ColumnModel> columns) {
         this.columns = columns;
     }
 
