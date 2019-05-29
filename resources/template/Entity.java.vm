@@ -39,7 +39,7 @@ public class ${className} extends MicroEntity<${className}> {
     /**
      * $column.comments
      */
-    private $column.attrType $column.attrname;
+    private $column.javaType $column.attrname;
 #end
 #end
 

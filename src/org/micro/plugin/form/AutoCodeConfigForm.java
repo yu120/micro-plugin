@@ -5,7 +5,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.micro.plugin.Constants;
-import org.micro.plugin.bean.MicroPluginConfig;
+import org.micro.plugin.bean.PluginConfig;
 import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -108,41 +108,41 @@ public class AutoCodeConfigForm implements Configurable {
     }
 
     public void setData(AutoCodeConfigComponent autoCodeConfigComponent) {
-        MicroPluginConfig microPluginConfig = autoCodeConfigComponent.getMicroPluginConfig();
-        this.databaseUrl.setText(microPluginConfig.getDatabaseUrl());
-        this.databaseUser.setText(microPluginConfig.getDatabaseUser());
-        this.databasePwd.setText(microPluginConfig.getDatabasePwd());
-        this.creator.setText(microPluginConfig.getCreateAuthor());
-        this.projectPath.setText(microPluginConfig.getProjectPath());
-        this.email.setText(microPluginConfig.getCreateEmail());
-        this.tableNamePrefix.setText(microPluginConfig.getTableNamePrefix());
+        PluginConfig pluginConfig = autoCodeConfigComponent.getPluginConfig();
+        this.databaseUrl.setText(pluginConfig.getDatabaseUrl());
+        this.databaseUser.setText(pluginConfig.getDatabaseUser());
+        this.databasePwd.setText(pluginConfig.getDatabasePwd());
+        this.creator.setText(pluginConfig.getCreateAuthor());
+        this.projectPath.setText(pluginConfig.getProjectPath());
+        this.email.setText(pluginConfig.getCreateEmail());
+        this.tableNamePrefix.setText(pluginConfig.getTableNamePrefix());
 
-        this.entityPackagePrefix.setText(microPluginConfig.getEntityPackagePrefix());
-        this.mapperPackagePrefix.setText(microPluginConfig.getMapperPackagePrefix());
-        this.mapperXmlPackagePrefix.setText(microPluginConfig.getMapperXmlPackagePrefix());
-        this.servicePackagePrefix.setText(microPluginConfig.getServicePackagePrefix());
-        this.serviceImplPackagePrefix.setText(microPluginConfig.getServiceImplPackagePrefix());
-        this.controllerPackagePrefix.setText(microPluginConfig.getControllerPackagePrefix());
+        this.entityPackagePrefix.setText(pluginConfig.getEntityPackagePrefix());
+        this.mapperPackagePrefix.setText(pluginConfig.getMapperPackagePrefix());
+        this.mapperXmlPackagePrefix.setText(pluginConfig.getMapperXmlPackagePrefix());
+        this.servicePackagePrefix.setText(pluginConfig.getServicePackagePrefix());
+        this.serviceImplPackagePrefix.setText(pluginConfig.getServiceImplPackagePrefix());
+        this.controllerPackagePrefix.setText(pluginConfig.getControllerPackagePrefix());
     }
 
     public void getData(AutoCodeConfigComponent autoCodeConfigComponent) {
-        MicroPluginConfig microPluginConfig = new MicroPluginConfig();
-        microPluginConfig.setDatabaseUrl(this.databaseUrl.getText().trim());
-        microPluginConfig.setDatabaseUser(this.databaseUser.getText().trim());
-        microPluginConfig.setDatabasePwd(this.databasePwd.getText().trim());
-        microPluginConfig.setCreateAuthor(this.creator.getText().trim());
-        microPluginConfig.setProjectPath(this.projectPath.getText().trim());
-        microPluginConfig.setCreateEmail(this.email.getText().trim());
-        microPluginConfig.setTableNamePrefix(this.tableNamePrefix.getText().trim());
+        PluginConfig pluginConfig = new PluginConfig();
+        pluginConfig.setDatabaseUrl(this.databaseUrl.getText().trim());
+        pluginConfig.setDatabaseUser(this.databaseUser.getText().trim());
+        pluginConfig.setDatabasePwd(this.databasePwd.getText().trim());
+        pluginConfig.setCreateAuthor(this.creator.getText().trim());
+        pluginConfig.setProjectPath(this.projectPath.getText().trim());
+        pluginConfig.setCreateEmail(this.email.getText().trim());
+        pluginConfig.setTableNamePrefix(this.tableNamePrefix.getText().trim());
 
-        microPluginConfig.setEntityPackagePrefix(this.entityPackagePrefix.getText().trim());
-        microPluginConfig.setMapperPackagePrefix(this.mapperPackagePrefix.getText().trim());
-        microPluginConfig.setMapperXmlPackagePrefix(this.mapperXmlPackagePrefix.getText().trim());
-        microPluginConfig.setServicePackagePrefix(this.servicePackagePrefix.getText().trim());
-        microPluginConfig.setServiceImplPackagePrefix(this.serviceImplPackagePrefix.getText().trim());
-        microPluginConfig.setControllerPackagePrefix(this.controllerPackagePrefix.getText().trim());
+        pluginConfig.setEntityPackagePrefix(this.entityPackagePrefix.getText().trim());
+        pluginConfig.setMapperPackagePrefix(this.mapperPackagePrefix.getText().trim());
+        pluginConfig.setMapperXmlPackagePrefix(this.mapperXmlPackagePrefix.getText().trim());
+        pluginConfig.setServicePackagePrefix(this.servicePackagePrefix.getText().trim());
+        pluginConfig.setServiceImplPackagePrefix(this.serviceImplPackagePrefix.getText().trim());
+        pluginConfig.setControllerPackagePrefix(this.controllerPackagePrefix.getText().trim());
 
-        autoCodeConfigComponent.setMicroPluginConfig(microPluginConfig);
+        autoCodeConfigComponent.setPluginConfig(pluginConfig);
     }
 
     /**
@@ -152,20 +152,20 @@ public class AutoCodeConfigForm implements Configurable {
      * @return modified return true
      */
     public boolean isModified(AutoCodeConfigComponent autoCodeConfigComponent) {
-        MicroPluginConfig microPluginConfig = autoCodeConfigComponent.getMicroPluginConfig();
-        return this.valueEquals(this.databaseUrl, microPluginConfig.getDatabaseUrl()) ||
-                this.valueEquals(this.databaseUser, microPluginConfig.getDatabaseUser()) ||
-                this.valueEquals(this.databasePwd, microPluginConfig.getDatabasePwd()) ||
-                this.valueEquals(this.tableNamePrefix, microPluginConfig.getTableNamePrefix()) ||
-                this.valueEquals(this.entityPackagePrefix, microPluginConfig.getEntityPackagePrefix()) ||
-                this.valueEquals(this.mapperPackagePrefix, microPluginConfig.getMapperPackagePrefix()) ||
-                this.valueEquals(this.mapperXmlPackagePrefix, microPluginConfig.getMapperXmlPackagePrefix()) ||
-                this.valueEquals(this.servicePackagePrefix, microPluginConfig.getServicePackagePrefix()) ||
-                this.valueEquals(this.serviceImplPackagePrefix, microPluginConfig.getServiceImplPackagePrefix()) ||
-                this.valueEquals(this.controllerPackagePrefix, microPluginConfig.getControllerPackagePrefix()) ||
-                this.valueEquals(this.creator, microPluginConfig.getCreateAuthor()) ||
-                this.valueEquals(this.email, microPluginConfig.getCreateEmail()) ||
-                this.valueEquals(this.projectPath, microPluginConfig.getProjectPath());
+        PluginConfig pluginConfig = autoCodeConfigComponent.getPluginConfig();
+        return this.valueEquals(this.databaseUrl, pluginConfig.getDatabaseUrl()) ||
+                this.valueEquals(this.databaseUser, pluginConfig.getDatabaseUser()) ||
+                this.valueEquals(this.databasePwd, pluginConfig.getDatabasePwd()) ||
+                this.valueEquals(this.tableNamePrefix, pluginConfig.getTableNamePrefix()) ||
+                this.valueEquals(this.entityPackagePrefix, pluginConfig.getEntityPackagePrefix()) ||
+                this.valueEquals(this.mapperPackagePrefix, pluginConfig.getMapperPackagePrefix()) ||
+                this.valueEquals(this.mapperXmlPackagePrefix, pluginConfig.getMapperXmlPackagePrefix()) ||
+                this.valueEquals(this.servicePackagePrefix, pluginConfig.getServicePackagePrefix()) ||
+                this.valueEquals(this.serviceImplPackagePrefix, pluginConfig.getServiceImplPackagePrefix()) ||
+                this.valueEquals(this.controllerPackagePrefix, pluginConfig.getControllerPackagePrefix()) ||
+                this.valueEquals(this.creator, pluginConfig.getCreateAuthor()) ||
+                this.valueEquals(this.email, pluginConfig.getCreateEmail()) ||
+                this.valueEquals(this.projectPath, pluginConfig.getProjectPath());
     }
 
     private boolean valueEquals(JTextField jTextField, String value) {

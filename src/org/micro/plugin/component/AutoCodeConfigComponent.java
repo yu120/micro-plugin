@@ -8,7 +8,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.micro.plugin.Constants;
-import org.micro.plugin.bean.MicroPluginConfig;
+import org.micro.plugin.bean.PluginConfig;
 import org.micro.plugin.form.AutoCodeConfigForm;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ import javax.swing.*;
 @State(name = "AutoCodeConfigComponent", storages = {@Storage(file = "$APP_CONFIG$/platform-gen.xml")})
 public class AutoCodeConfigComponent implements BaseComponent, Configurable, PersistentStateComponent<AutoCodeConfigComponent> {
 
-    private MicroPluginConfig microPluginConfig = new MicroPluginConfig();
+    private PluginConfig pluginConfig = new PluginConfig();
     private AutoCodeConfigForm autoCodeConfigForm;
 
     @Override
@@ -87,12 +87,12 @@ public class AutoCodeConfigComponent implements BaseComponent, Configurable, Per
         return this;
     }
 
-    public MicroPluginConfig getMicroPluginConfig() {
-        return microPluginConfig;
+    public PluginConfig getPluginConfig() {
+        return pluginConfig;
     }
 
-    public void setMicroPluginConfig(MicroPluginConfig microPluginConfig) {
-        this.microPluginConfig = microPluginConfig;
+    public void setPluginConfig(PluginConfig pluginConfig) {
+        this.pluginConfig = pluginConfig;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class AutoCodeConfigComponent implements BaseComponent, Configurable, Per
             return;
         }
 
-        XmlSerializerUtil.copyBean(autoCodeConfigComponent.microPluginConfig, microPluginConfig);
+        XmlSerializerUtil.copyBean(autoCodeConfigComponent.pluginConfig, pluginConfig);
     }
 
 }

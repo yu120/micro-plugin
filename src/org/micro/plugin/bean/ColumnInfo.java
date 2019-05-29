@@ -54,5 +54,5 @@ public class ColumnInfo implements Serializable {
     public void setExtra(String extra) {
         this.extra = extra;
     }
-    
+
 }

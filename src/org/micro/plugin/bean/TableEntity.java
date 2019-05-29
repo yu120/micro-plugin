@@ -29,6 +29,9 @@ public class TableEntity {
      */
     private String classname;
 
+    private boolean hasDate;
+    private boolean hasBigDecimal;
+
     public String getTableName() {
         return tableName;
     }
@@ -76,4 +79,21 @@ public class TableEntity {
     public void setClassname(String classname) {
         this.classname = classname;
     }
+
+    public boolean isHasDate() {
+        return hasDate;
+    }
+
+    public void setHasDate(boolean hasDate) {
+        this.hasDate = hasDate;
+    }
+
+    public boolean isHasBigDecimal() {
+        return hasBigDecimal;
+    }
+
+    public void setHasBigDecimal(boolean hasBigDecimal) {
+        this.hasBigDecimal = hasBigDecimal;
+    }
+
 }

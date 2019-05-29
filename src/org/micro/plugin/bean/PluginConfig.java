@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
-public class MicroPluginConfig implements Serializable {
+public class PluginConfig implements Serializable {
 
     private String databaseUrl = "jdbc:mysql://localhost:3306/micro?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
     private String databaseUser = "root";
@@ -136,7 +136,7 @@ public class MicroPluginConfig implements Serializable {
 
     @Override
     public String toString() {
-        return "MicroPluginConfig{" +
+        return "PluginConfig{" +
                 "databaseUrl='" + databaseUrl + '\'' +
                 ", databaseUser='" + databaseUser + '\'' +
                 ", databasePwd='" + databasePwd + '\'' +

@@ -1,4 +1,4 @@
-package org.micro.plugin.util;
+package org.micro.plugin.support;
 
 /**
  * Data Type Enum

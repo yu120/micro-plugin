@@ -7,15 +7,16 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.micro.plugin.Constants;
-import org.micro.plugin.bean.MicroPluginConfig;
+import org.micro.plugin.bean.PluginConfig;
 import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
 import org.micro.plugin.component.AutoCodeConfigComponent;
-import org.micro.plugin.util.DatabaseUtil;
-import org.micro.plugin.util.GeneratorUtils;
+import org.micro.plugin.support.DatabaseUtil;
+import org.micro.plugin.GeneratorFactory;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,64 +33,51 @@ public class AutoCodeDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField tableName;
-    private MicroPluginConfig microPluginConfig = null;
+    private PluginConfig pluginConfig = new PluginConfig();
 
     public AutoCodeDialog() {
-        setContentPane(this.contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(this.buttonOK);
-        setSize(700, 300);
-        setLocationRelativeTo(null);
-        setTitle(Constants.MICRO_SERVICE);
+        super.setContentPane(this.contentPane);
+        super.setModal(true);
+        super.getRootPane().setDefaultButton(this.buttonOK);
+        super.setSize(700, 300);
+        super.setLocationRelativeTo(null);
+        super.setTitle(Constants.MICRO_SERVICE);
 
-        this.buttonOK.addActionListener(e -> AutoCodeDialog.this.onOK());
-        this.buttonCancel.addActionListener(e -> AutoCodeDialog.this.onCancel());
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.buttonOK.addActionListener(e -> onOK());
+        this.buttonCancel.addActionListener(e -> dispose());
+        super.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         super.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                AutoCodeDialog.this.onCancel();
+            public void windowClosing(WindowEvent e) {
+                dispose();
             }
         });
-        this.contentPane.registerKeyboardAction(e -> AutoCodeDialog.this.onCancel(),
+        this.contentPane.registerKeyboardAction(e -> dispose(),
                 KeyStroke.getKeyStroke(27, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
-        this.microPluginConfig = buildPluginConfig();
-        if (this.microPluginConfig != null) {
-            if (this.createFile(this.microPluginConfig)) {
-                JOptionPane.showMessageDialog(getContentPane(), "Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-            }
-        }
-    }
-
-    private void onCancel() {
-        dispose();
-    }
-
-    private MicroPluginConfig buildPluginConfig() {
-        MicroPluginConfig tempMicroPluginConfig = new MicroPluginConfig();
-
         // 从应用配置拷贝配置信息
         Application application = ApplicationManager.getApplication();
         AutoCodeConfigComponent autoCodeConfigComponent = application.getComponent(AutoCodeConfigComponent.class);
-        XmlSerializerUtil.copyBean(autoCodeConfigComponent.getMicroPluginConfig(), tempMicroPluginConfig);
+        XmlSerializerUtil.copyBean(autoCodeConfigComponent.getPluginConfig(), pluginConfig);
 
         String inputTables = this.tableName.getText().trim().toUpperCase();
         if (StringUtils.isNotBlank(inputTables)) {
             List<String> tableNames = new ArrayList<>();
             String[] tempTableNameArray = inputTables.split(",");
             Collections.addAll(tableNames, tempTableNameArray);
-            tempMicroPluginConfig.setTableNames(tableNames);
+            pluginConfig.setTableNames(tableNames);
         }
 
-        return tempMicroPluginConfig;
+        if (this.createFile(pluginConfig)) {
+            JOptionPane.showMessageDialog(getContentPane(), "Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        }
     }
 
-    private boolean createFile(MicroPluginConfig tempMicroPluginConfig) {
-        DatabaseUtil dbUtil = new DatabaseUtil(tempMicroPluginConfig);
+    private boolean createFile(PluginConfig tempPluginConfig) {
+        DatabaseUtil dbUtil = new DatabaseUtil(tempPluginConfig);
 
         try {
             // 查询表信息
@@ -102,8 +90,8 @@ public class AutoCodeDialog extends JDialog {
             Map<String, List<ColumnInfo>> columnInfoMap = dbUtil.queryAllTableColumns();
 
             List<String> tempTableNames = new ArrayList<>();
-            if (CollectionUtils.isNotEmpty(tempMicroPluginConfig.getTableNames())) {
-                tempTableNames.addAll(tempMicroPluginConfig.getTableNames());
+            if (CollectionUtils.isNotEmpty(tempPluginConfig.getTableNames())) {
+                tempTableNames.addAll(tempPluginConfig.getTableNames());
             }
             if (CollectionUtils.isEmpty(tempTableNames)) {
                 tempTableNames.addAll(tableInfoMap.keySet());
@@ -113,7 +101,7 @@ public class AutoCodeDialog extends JDialog {
                 TableInfo tableInfo = tableInfoMap.get(tableName);
                 List<ColumnInfo> columnInfoList = columnInfoMap.get(tableName);
                 // 生成代码
-                GeneratorUtils.generateCode(microPluginConfig, tableInfo, columnInfoList);
+                GeneratorFactory.INSTANCE.generateCode(pluginConfig, tableInfo, columnInfoList);
             }
 
             return true;
@@ -126,32 +114,20 @@ public class AutoCodeDialog extends JDialog {
     }
 
     /**
-     * 主要功能: 根据异常生成Log日志信息 注意事项:无
+     * Generate message
      *
      * @param e 异常信息
      * @return String 日志信息
      */
     private String generateMessage(Exception e) {
-        String message = "";
-        for (StackTraceElement stackTraceElement : e.getStackTrace()) {
-            if (stackTraceElement.toString().startsWith(Constants.PACKAGE_PREFIX)) {
-                message += "类名：" + stackTraceElement.getFileName() + ";方法："
-                        + stackTraceElement.getMethodName() + ";行号："
-                        + stackTraceElement.getLineNumber() + ";异常信息:"
-                        + e.getMessage();
-                break;
-            }
-            if (stackTraceElement.toString().startsWith("org.springframework.web.method.annotation")) {
-                message += "类名：" + stackTraceElement.getFileName() + ";方法："
-                        + stackTraceElement.getMethodName() + ";行号："
-                        + stackTraceElement.getLineNumber() + ";异常信息:"
-                        + e.getMessage();
-                break;
-            }
-            message = e.getMessage();
+        for (StackTraceElement ste : e.getStackTrace()) {
+            return "类名：" + ste.getFileName() + ";" +
+                    "方法：" + ste.getMethodName() + ";" +
+                    "行号：" + ste.getLineNumber() + ";" +
+                    "异常信息:" + e.getMessage();
         }
 
-        return message;
+        return e.getMessage();
     }
 
 }

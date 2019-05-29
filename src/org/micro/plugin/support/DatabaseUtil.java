@@ -1,7 +1,7 @@
-package org.micro.plugin.util;
+package org.micro.plugin.support;
 
 import org.micro.plugin.Constants;
-import org.micro.plugin.bean.MicroPluginConfig;
+import org.micro.plugin.bean.PluginConfig;
 import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
 
@@ -14,9 +14,9 @@ import java.util.Map;
 public class DatabaseUtil {
 
     private Connection conn;
-    private MicroPluginConfig bean;
+    private PluginConfig bean;
 
-    public DatabaseUtil(MicroPluginConfig bean) {
+    public DatabaseUtil(PluginConfig bean) {
         this.bean = bean;
     }
 
@@ -47,7 +47,6 @@ public class DatabaseUtil {
                 tableInfo.setTableName(rs.getString("table_name"));
                 tableInfo.setTableComment(rs.getString("table_comment"));
                 tableInfoMap.put(tableInfo.getTableName(), tableInfo);
-
             }
 
             return tableInfoMap;

@@ -25,7 +25,7 @@ public class ColumnEntity {
     /**
      * 属性类型
      */
-    private String attrType;
+    private String javaType;
     /**
      * auto_increment
      */
@@ -71,12 +71,12 @@ public class ColumnEntity {
         this.attrName = attrName;
     }
 
-    public String getAttrType() {
-        return attrType;
+    public String getJavaType() {
+        return javaType;
     }
 
-    public void setAttrType(String attrType) {
-        this.attrType = attrType;
+    public void setJavaType(String javaType) {
+        this.javaType = javaType;
     }
 
     public String getExtra() {
