@@ -173,16 +173,17 @@ public enum GeneratorFactory {
         parameters.put("classname", tableEntity.getClassname());
         parameters.put("pathName", tableEntity.getClassname().toLowerCase());
         parameters.put("columns", tableEntity.getColumns());
-        parameters.put("entityPackage", pluginConfig.getEntityPackagePrefix());
-        parameters.put("mapperPackage", pluginConfig.getMapperPackagePrefix());
-        parameters.put("mapperXmlPackage", pluginConfig.getMapperXmlPackagePrefix());
-        parameters.put("servicePackage", pluginConfig.getServicePackagePrefix());
-        parameters.put("serviceImplPackage", pluginConfig.getServiceImplPackagePrefix());
-        parameters.put("controllerPackage", pluginConfig.getControllerPackagePrefix());
         parameters.put("author", pluginConfig.getCreateAuthor());
         parameters.put("datetime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         parameters.put("hasDate", tableEntity.isHasDate());
         parameters.put("hasBigDecimal", tableEntity.isHasBigDecimal());
+
+        parameters.put("entityPackage", pluginConfig.getEntityPackagePrefix());
+        parameters.put("mapperPackage", pluginConfig.getMapperPackagePrefix());
+        parameters.put("servicePackage", pluginConfig.getServicePackagePrefix());
+        parameters.put("serviceImplPackage", pluginConfig.getServiceImplPackagePrefix());
+        parameters.put("controllerPackage", pluginConfig.getControllerPackagePrefix());
+
         return parameters;
     }
 
