@@ -10,8 +10,7 @@ import org.micro.plugin.Constants;
 import org.micro.plugin.bean.PluginConfig;
 import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
-import org.micro.plugin.view.AutoCodeConfigComponent;
-import org.micro.plugin.support.DatabaseUtil;
+import org.micro.plugin.DatabaseFactory;
 import org.micro.plugin.GeneratorFactory;
 
 import javax.swing.*;
@@ -77,7 +76,7 @@ public class AutoCodeDialog extends JDialog {
     }
 
     private boolean createFile(PluginConfig tempPluginConfig) {
-        DatabaseUtil dbUtil = new DatabaseUtil(tempPluginConfig);
+        DatabaseFactory dbUtil = new DatabaseFactory(tempPluginConfig);
 
         try {
             // 查询表信息

@@ -9,7 +9,6 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.micro.plugin.service.TemplatePlugin;
-import org.micro.plugin.support.DataTypeEnum;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

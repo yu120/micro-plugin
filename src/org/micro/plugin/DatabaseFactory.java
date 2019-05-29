@@ -1,4 +1,4 @@
-package org.micro.plugin.support;
+package org.micro.plugin;
 
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.PluginConfig;
@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DatabaseUtil {
+public class DatabaseFactory {
 
     private Connection conn;
     private PluginConfig bean;
 
-    public DatabaseUtil(PluginConfig bean) {
+    public DatabaseFactory(PluginConfig bean) {
         this.bean = bean;
     }
 
