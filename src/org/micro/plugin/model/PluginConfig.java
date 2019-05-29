@@ -14,7 +14,7 @@ public class PluginConfig implements Serializable {
     private String databaseUrl = "jdbc:mysql://localhost:3306/micro?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
     private String databaseUser = "root";
     private String databasePwd = "123456";
-    private String projectPath = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
+    private String projectPath = System.getProperty("user.home") + File.separator + "temp" + File.separator;
     private String tableNamePrefix = "";
     private String entityPackagePrefix = "cn.micro.biz.entity";
     private String mapperPackagePrefix = "cn.micro.biz.mapper";
