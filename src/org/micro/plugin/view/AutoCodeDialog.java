@@ -6,7 +6,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
-import org.micro.plugin.Constants;
+import org.micro.plugin.MainAction;
 import org.micro.plugin.bean.PluginConfig;
 import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
@@ -40,7 +40,7 @@ public class AutoCodeDialog extends JDialog {
         super.getRootPane().setDefaultButton(this.buttonOK);
         super.setSize(700, 300);
         super.setLocationRelativeTo(null);
-        super.setTitle(Constants.DISPLAY_NAME);
+        super.setTitle(MainAction.DISPLAY_NAME);
 
         this.buttonOK.addActionListener(e -> onOK());
         this.buttonCancel.addActionListener(e -> dispose());

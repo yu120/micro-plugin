@@ -36,7 +36,7 @@
     <actions>
         <group id="MyPlugin.SampleMenu" text="Micro Service" description="Micro Service">
             <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="MyPlugin.Textboxes" class="org.micro.plugin.AutoCodeAction"
+            <action id="MyPlugin.Textboxes" class="org.micro.plugin.MainAction"
                     text="Table to Code" description="Table to Code"/>
         </group>
     </actions>

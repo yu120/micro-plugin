@@ -17,6 +17,15 @@ import java.util.Map;
  */
 public class DatabaseFactory {
 
+    private static final String SELECT_ALL_TABLE_NAME_SQL =
+            "SELECT table_name,table_comment " +
+                    "FROM information_schema.TABLES " +
+                    "WHERE table_schema=(SELECT DATABASE()) AND table_type='base table'";
+    private static final String SELECT_TABLE_COLUMN_SQL =
+            "SELECT table_name,column_name,data_type,column_comment,column_key,extra " +
+                    "FROM information_schema.COLUMNS " +
+                    "WHERE table_schema = (SELECT DATABASE()) ORDER BY table_name,ordinal_position";
+
     private Connection conn;
     private PluginConfig bean;
 
@@ -43,7 +52,7 @@ public class DatabaseFactory {
         Map<String, TableInfo> tableInfoMap = new HashMap<>();
 
         try {
-            ps = conn.prepareStatement(Constants.SELECT_ALL_TABLE_NAME_SQL);
+            ps = conn.prepareStatement(SELECT_ALL_TABLE_NAME_SQL);
             rs = ps.executeQuery();
             while (rs.next()) {
                 TableInfo tableInfo = new TableInfo();
@@ -65,7 +74,7 @@ public class DatabaseFactory {
         Map<String, List<ColumnInfo>> columnInfoMap = new HashMap<>();
 
         try {
-            ps = conn.prepareStatement(Constants.SELECT_TABLE_COLUMN_SQL);
+            ps = conn.prepareStatement(SELECT_TABLE_COLUMN_SQL);
             rs = ps.executeQuery();
             while (rs.next()) {
                 ColumnInfo columnInfo = new ColumnInfo();

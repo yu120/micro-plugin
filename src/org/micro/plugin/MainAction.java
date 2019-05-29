@@ -5,11 +5,13 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.micro.plugin.view.AutoCodeDialog;
 
 /**
- * Auto Code Action
+ * Auto Code Main Action
  *
  * @author lry
  */
-public class AutoCodeAction extends AnAction {
+public class MainAction extends AnAction {
+
+    public static final String DISPLAY_NAME = "Micro Service";
 
     @Override
     public void actionPerformed(AnActionEvent e) {
