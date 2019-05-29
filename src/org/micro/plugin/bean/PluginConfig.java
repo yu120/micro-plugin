@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Plugin Config
+ *
+ * @author lry
+ */
 public class PluginConfig implements Serializable {
 
     private String databaseUrl = "jdbc:mysql://localhost:3306/micro?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8";

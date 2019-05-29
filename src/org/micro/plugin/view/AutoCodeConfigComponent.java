@@ -15,6 +15,11 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+/**
+ * Auto CodeConfig Component
+ *
+ * @author lry
+ */
 @State(name = "AutoCodeConfigComponent", storages = {@Storage(file = "$APP_CONFIG$/platform-gen.xml")})
 public class AutoCodeConfigComponent implements BaseComponent, Configurable, PersistentStateComponent<AutoCodeConfigComponent> {
 

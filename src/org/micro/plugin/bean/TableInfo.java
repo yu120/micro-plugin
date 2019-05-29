@@ -2,15 +2,14 @@ package org.micro.plugin.bean;
 
 import java.io.Serializable;
 
+/**
+ * Table Info
+ *
+ * @author lry
+ */
 public class TableInfo implements Serializable {
 
-    /**
-     * 表名
-     */
     private String tableName;
-    /**
-     * 表注释
-     */
     private String tableComment;
 
     public String getTableName() {

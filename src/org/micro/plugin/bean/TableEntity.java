@@ -1,19 +1,17 @@
 package org.micro.plugin.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TableEntity {
-    /**
-     * 表的名称
-     */
+/**
+ * Table Entity
+ *
+ * @author lry
+ */
+public class TableEntity implements Serializable {
+
     private String tableName;
-    /**
-     * 表的备注
-     */
     private String comments;
-    /**
-     * 表的主键
-     */
     private ColumnEntity pk;
     /**
      * 表的列名(不包含主键)

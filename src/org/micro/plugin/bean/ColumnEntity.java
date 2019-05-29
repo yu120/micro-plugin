@@ -1,17 +1,16 @@
 package org.micro.plugin.bean;
 
-public class ColumnEntity {
-    /**
-     * 列名
-     */
+import java.io.Serializable;
+
+/**
+ * Column Entity
+ *
+ * @author lry
+ */
+public class ColumnEntity implements Serializable {
+
     private String columnName;
-    /**
-     * 列名类型
-     */
     private String dataType;
-    /**
-     * 列名备注
-     */
     private String comments;
 
     /**
@@ -23,7 +22,7 @@ public class ColumnEntity {
      */
     private String attrname;
     /**
-     * 属性类型
+     * JAVA 属性类型
      */
     private String javaType;
     /**

@@ -1,6 +1,5 @@
 package org.micro.plugin;
 
-import org.micro.plugin.Constants;
 import org.micro.plugin.bean.PluginConfig;
 import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
@@ -11,6 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Database Factory
+ *
+ * @author lry
+ */
 public class DatabaseFactory {
 
     private Connection conn;

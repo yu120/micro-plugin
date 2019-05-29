@@ -6,7 +6,6 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.PluginConfig;
-import org.micro.plugin.view.AutoCodeConfigComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
