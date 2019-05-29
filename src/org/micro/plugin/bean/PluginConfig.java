@@ -134,23 +134,4 @@ public class PluginConfig implements Serializable {
         this.tableNames = tableNames;
     }
 
-    @Override
-    public String toString() {
-        return "PluginConfig{" +
-                "databaseUrl='" + databaseUrl + '\'' +
-                ", databaseUser='" + databaseUser + '\'' +
-                ", databasePwd='" + databasePwd + '\'' +
-                ", projectPath='" + projectPath + '\'' +
-                ", tableNamePrefix='" + tableNamePrefix + '\'' +
-                ", entityPackagePrefix='" + entityPackagePrefix + '\'' +
-                ", mapperPackagePrefix='" + mapperPackagePrefix + '\'' +
-                ", servicePackagePrefix='" + servicePackagePrefix + '\'' +
-                ", serviceImplPackagePrefix='" + serviceImplPackagePrefix + '\'' +
-                ", controllerPackagePrefix='" + controllerPackagePrefix + '\'' +
-                ", mapperXmlPackagePrefix='" + mapperXmlPackagePrefix + '\'' +
-                ", createAuthor='" + createAuthor + '\'' +
-                ", createEmail='" + createEmail + '\'' +
-                ", tableNames=" + tableNames +
-                '}';
-    }
 }
