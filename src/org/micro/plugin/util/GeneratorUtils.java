@@ -212,10 +212,12 @@ public class GeneratorUtils {
      * @return full file path name
      */
     private static String buildFilePathName(MicroPluginConfig microPluginConfig, FileVmEnum fileVmEnum, String className) {
-        StringBuilder javaPath = new StringBuilder(microPluginConfig.getProjectPath());
-        if (!microPluginConfig.getProjectPath().equals(File.separator)) {
-            javaPath.append(File.separator);
+        String projectPath = microPluginConfig.getProjectPath();
+        if (!projectPath.endsWith(File.separator)) {
+            projectPath += File.separator;
         }
+
+        StringBuilder javaPath = new StringBuilder(projectPath);
         javaPath.append("src").append(File.separator).append("main").append(File.separator).append("java").append(File.separator);
 
         switch (fileVmEnum) {
@@ -235,7 +237,8 @@ public class GeneratorUtils {
                 return javaPath.append(microPluginConfig.getControllerPackagePrefix().replace(".", File.separator))
                         .append(File.separator).append(className).append(fileVmEnum.getSuffix()).toString();
             case MAPPER_XML:
-                return "src" + File.separator + microPluginConfig.getMapperXmlPackagePrefix().replace(".", File.separator)
+                return projectPath + "src" + File.separator +
+                        microPluginConfig.getMapperXmlPackagePrefix().replace(".", File.separator)
                         + File.separator + className + fileVmEnum.getSuffix();
             default:
                 throw new IllegalArgumentException("没有配置模板：" + fileVmEnum.getValue());
