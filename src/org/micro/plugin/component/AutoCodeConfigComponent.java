@@ -96,7 +96,11 @@ public class AutoCodeConfigComponent implements BaseComponent, Configurable, Per
     }
 
     @Override
-    public void loadState(AutoCodeConfigComponent autoCodeConfigComponent) {
+    public void loadState(@Nullable AutoCodeConfigComponent autoCodeConfigComponent) {
+        if (autoCodeConfigComponent == null) {
+            return;
+        }
+
         XmlSerializerUtil.copyBean(autoCodeConfigComponent.microPluginConfig, microPluginConfig);
     }
 

@@ -1,5 +1,8 @@
 package org.micro.plugin.dialog;
 
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
@@ -7,6 +10,7 @@ import org.micro.plugin.Constants;
 import org.micro.plugin.bean.MicroPluginConfig;
 import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
+import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.micro.plugin.util.DatabaseUtil;
 import org.micro.plugin.util.GeneratorUtils;
 
@@ -52,7 +56,7 @@ public class AutoCodeDialog extends JDialog {
     }
 
     private void onOK() {
-        this.microPluginConfig = buildParam();
+        this.microPluginConfig = buildPluginConfig();
         if (this.microPluginConfig != null) {
             if (this.createFile(this.microPluginConfig)) {
                 JOptionPane.showMessageDialog(getContentPane(), "Success!", "Result", JOptionPane.INFORMATION_MESSAGE);
@@ -65,17 +69,23 @@ public class AutoCodeDialog extends JDialog {
         dispose();
     }
 
-    private MicroPluginConfig buildParam() {
-        MicroPluginConfig bean = new MicroPluginConfig();
+    private MicroPluginConfig buildPluginConfig() {
+        MicroPluginConfig tempMicroPluginConfig = new MicroPluginConfig();
+
+        // 从应用配置拷贝配置信息
+        Application application = ApplicationManager.getApplication();
+        AutoCodeConfigComponent autoCodeConfigComponent = application.getComponent(AutoCodeConfigComponent.class);
+        XmlSerializerUtil.copyBean(autoCodeConfigComponent.getMicroPluginConfig(), tempMicroPluginConfig);
+
         String inputTables = this.tableName.getText().trim().toUpperCase();
         if (StringUtils.isNotBlank(inputTables)) {
             List<String> tableNames = new ArrayList<>();
             String[] tempTableNameArray = inputTables.split(",");
             Collections.addAll(tableNames, tempTableNameArray);
-            bean.setTableNames(tableNames);
+            tempMicroPluginConfig.setTableNames(tableNames);
         }
 
-        return bean;
+        return tempMicroPluginConfig;
     }
 
     private boolean createFile(MicroPluginConfig tempMicroPluginConfig) {
