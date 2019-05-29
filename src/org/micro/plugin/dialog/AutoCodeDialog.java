@@ -103,7 +103,7 @@ public class AutoCodeDialog extends JDialog {
                 TableInfo tableInfo = tableInfoMap.get(tableName);
                 List<ColumnInfo> columnInfoList = columnInfoMap.get(tableName);
                 // 生成代码
-                GeneratorUtils.generatorCode(microPluginConfig, tableInfo, columnInfoList);
+                GeneratorUtils.generateCode(microPluginConfig, tableInfo, columnInfoList);
             }
 
             return true;

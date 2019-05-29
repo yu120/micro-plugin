@@ -29,6 +29,12 @@ public class AutoCodeConfigForm implements Configurable {
     private JLabel projectPathLabel;
     private JLabel emailLabel;
     private JLabel tableNamePrefixLabel;
+    private JLabel entityPackagePrefixLabel;
+    private JLabel mapperPackagePrefixLabel;
+    private JLabel mapperXmlPackagePrefixLabel;
+    private JLabel servicePackagePrefixLabel;
+    private JLabel serviceImplPackagePrefixLabel;
+    private JLabel controllerPackagePrefixLabel;
 
     private JButton projectPathSelBtn;
 
@@ -39,6 +45,12 @@ public class AutoCodeConfigForm implements Configurable {
     private JTextField projectPath;
     private JTextField email;
     private JTextField tableNamePrefix;
+    private JTextField entityPackagePrefix;
+    private JTextField mapperPackagePrefix;
+    private JTextField mapperXmlPackagePrefix;
+    private JTextField servicePackagePrefix;
+    private JTextField serviceImplPackagePrefix;
+    private JTextField controllerPackagePrefix;
 
 
     public AutoCodeConfigForm() {
@@ -50,6 +62,13 @@ public class AutoCodeConfigForm implements Configurable {
         this.projectPathLabel.setLabelFor(this.projectPath);
         this.emailLabel.setLabelFor(this.email);
         this.tableNamePrefixLabel.setLabelFor(this.tableNamePrefix);
+
+        this.entityPackagePrefixLabel.setLabelFor(this.entityPackagePrefix);
+        this.mapperPackagePrefixLabel.setLabelFor(this.mapperPackagePrefix);
+        this.mapperXmlPackagePrefixLabel.setLabelFor(this.mapperXmlPackagePrefix);
+        this.servicePackagePrefixLabel.setLabelFor(this.servicePackagePrefix);
+        this.serviceImplPackagePrefixLabel.setLabelFor(this.serviceImplPackagePrefix);
+        this.controllerPackagePrefixLabel.setLabelFor(this.controllerPackagePrefix);
 
         this.projectPathSelBtn.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -75,6 +94,13 @@ public class AutoCodeConfigForm implements Configurable {
         this.projectPath.setText(microPluginConfig.getProjectPath());
         this.email.setText(microPluginConfig.getCreateEmail());
         this.tableNamePrefix.setText(microPluginConfig.getTableNamePrefix());
+
+        this.entityPackagePrefix.setText(microPluginConfig.getEntityPackagePrefix());
+        this.mapperPackagePrefix.setText(microPluginConfig.getMapperPackagePrefix());
+        this.mapperXmlPackagePrefix.setText(microPluginConfig.getMapperXmlPackagePrefix());
+        this.servicePackagePrefix.setText(microPluginConfig.getServicePackagePrefix());
+        this.serviceImplPackagePrefix.setText(microPluginConfig.getServiceImplPackagePrefix());
+        this.controllerPackagePrefix.setText(microPluginConfig.getControllerPackagePrefix());
     }
 
     public void getData(AutoCodeConfigComponent autoCodeConfigComponent) {
@@ -86,19 +112,62 @@ public class AutoCodeConfigForm implements Configurable {
         microPluginConfig.setProjectPath(this.projectPath.getText().trim());
         microPluginConfig.setCreateEmail(this.email.getText().trim());
         microPluginConfig.setTableNamePrefix(this.tableNamePrefix.getText().trim());
+
+        microPluginConfig.setEntityPackagePrefix(this.entityPackagePrefix.getText().trim());
+        microPluginConfig.setMapperPackagePrefix(this.mapperPackagePrefix.getText().trim());
+        microPluginConfig.setMapperXmlPackagePrefix(this.mapperXmlPackagePrefix.getText().trim());
+        microPluginConfig.setServicePackagePrefix(this.servicePackagePrefix.getText().trim());
+        microPluginConfig.setServiceImplPackagePrefix(this.serviceImplPackagePrefix.getText().trim());
+        microPluginConfig.setControllerPackagePrefix(this.controllerPackagePrefix.getText().trim());
+
         autoCodeConfigComponent.setMicroPluginConfig(microPluginConfig);
     }
 
     public boolean isModified(AutoCodeConfigComponent autoCodeConfigComponent) {
         MicroPluginConfig microPluginConfig = autoCodeConfigComponent.getMicroPluginConfig();
-        boolean isModifiedT1 = (this.databaseUrl.getText() != null) && (!this.databaseUrl.getText().equals(microPluginConfig.getDatabaseUrl()));
-        boolean isModifiedT2 = (this.databaseUser.getText() != null) && (!this.databaseUser.getText().equals(microPluginConfig.getDatabaseUser()));
-        boolean isModifiedT3 = (this.databasePwd.getText() != null) && (!this.databasePwd.getText().equals(microPluginConfig.getDatabasePwd()));
-        boolean isModifiedT4 = (this.creator.getText() != null) && (!this.creator.getText().equals(microPluginConfig.getCreateAuthor()));
-        boolean isModifiedT5 = (this.projectPath.getText() != null) && (!this.projectPath.getText().equals(microPluginConfig.getProjectPath()));
-        boolean isModifiedT6 = (this.email.getText() != null) && (!this.email.getText().equals(microPluginConfig.getCreateEmail()));
-        boolean isModifiedT7 = (this.tableNamePrefix.getText() != null) && (!this.tableNamePrefix.getText().equals(microPluginConfig.getTableNamePrefix()));
-        return isModifiedT1 || isModifiedT2 || isModifiedT3 || isModifiedT4 || isModifiedT5 || isModifiedT6 || isModifiedT7;
+        if (this.databaseUrl.getText() != null && !this.databaseUrl.getText().equals(microPluginConfig.getDatabaseUrl())) {
+            return true;
+        }
+        if ((this.databaseUser.getText() != null) && (!this.databaseUser.getText().equals(microPluginConfig.getDatabaseUser()))) {
+            return true;
+        }
+        if (this.databasePwd.getText() != null && !this.databasePwd.getText().equals(microPluginConfig.getDatabasePwd())) {
+            return true;
+        }
+        if (this.tableNamePrefix.getText() != null && !this.tableNamePrefix.getText().equals(microPluginConfig.getTableNamePrefix())) {
+            return true;
+        }
+
+        if (this.entityPackagePrefix.getText() != null && !this.entityPackagePrefix.getText().equals(microPluginConfig.getEntityPackagePrefix())) {
+            return true;
+        }
+        if (this.mapperPackagePrefix.getText() != null && !this.mapperPackagePrefix.getText().equals(microPluginConfig.getMapperPackagePrefix())) {
+            return true;
+        }
+        if (this.mapperXmlPackagePrefix.getText() != null && !this.mapperXmlPackagePrefix.getText().equals(microPluginConfig.getMapperXmlPackagePrefix())) {
+            return true;
+        }
+        if (this.servicePackagePrefix.getText() != null && !this.servicePackagePrefix.getText().equals(microPluginConfig.getServicePackagePrefix())) {
+            return true;
+        }
+        if (this.serviceImplPackagePrefix.getText() != null && !this.serviceImplPackagePrefix.getText().equals(microPluginConfig.getServiceImplPackagePrefix())) {
+            return true;
+        }
+        if (this.controllerPackagePrefix.getText() != null && !this.controllerPackagePrefix.getText().equals(microPluginConfig.getControllerPackagePrefix())) {
+            return true;
+        }
+
+        if (this.creator.getText() != null && !this.creator.getText().equals(microPluginConfig.getCreateAuthor())) {
+            return true;
+        }
+        if (this.email.getText() != null && !this.email.getText().equals(microPluginConfig.getCreateEmail())) {
+            return true;
+        }
+        if (this.projectPath.getText() != null && !this.projectPath.getText().equals(microPluginConfig.getProjectPath())) {
+            return true;
+        }
+
+        return false;
     }
 
     @Nls
