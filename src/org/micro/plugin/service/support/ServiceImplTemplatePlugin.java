@@ -17,10 +17,11 @@ public class ServiceImplTemplatePlugin implements TemplatePlugin {
 
     @Override
     public String buildPath(VMTemplate vmTemplate, PluginConfig pluginConfig, TableEntity tableEntity) {
+        String serviceImplPackage = pluginConfig.getServiceImplPackagePrefix().replace(".", File.separator);
         return "src" + File.separator +
                 "main" + File.separator +
                 "java" + File.separator +
-                pluginConfig.getEntityPackagePrefix().replace(".", File.separator) + File.separator +
+                serviceImplPackage + File.separator +
                 tableEntity.getClassName() + vmTemplate.suffix();
     }
 

@@ -17,10 +17,11 @@ public class MapperTemplatePlugin implements TemplatePlugin {
 
     @Override
     public String buildPath(VMTemplate vmTemplate, PluginConfig pluginConfig, TableEntity tableEntity) {
+        String mapperPackage = pluginConfig.getMapperPackagePrefix().replace(".", File.separator);
         return "src" + File.separator +
                 "main" + File.separator +
                 "java" + File.separator +
-                pluginConfig.getEntityPackagePrefix().replace(".", File.separator) + File.separator +
+                mapperPackage + File.separator +
                 tableEntity.getClassName() + vmTemplate.suffix();
     }
 
