@@ -73,16 +73,41 @@ public class AutoCodeConfigForm implements Configurable {
         this.projectPathSelBtn.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int i = fileChooser.showOpenDialog(AutoCodeConfigForm.this.rootComponent);
-            if (i == 0) {
-                File file = fileChooser.getSelectedFile();
-                AutoCodeConfigForm.this.projectPath.setText(file.getAbsolutePath());
+            if (fileChooser.showOpenDialog(this.rootComponent) == 0) {
+                this.projectPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }
         });
     }
 
     public JComponent getRootComponent() {
         return this.rootComponent;
+    }
+
+    @Nls
+    @Override
+    public String getDisplayName() {
+        return Constants.MICRO_SERVICE;
+    }
+
+    @Nullable
+    @Override
+    public JComponent createComponent() {
+        Application application = ApplicationManager.getApplication();
+        AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
+        this.setData(config);
+        return rootComponent;
+    }
+
+    @Override
+    public boolean isModified() {
+        return true;
+    }
+
+    @Override
+    public void apply() throws ConfigurationException {
+        Application application = ApplicationManager.getApplication();
+        AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
+        this.getData(config);
     }
 
     public void setData(AutoCodeConfigComponent autoCodeConfigComponent) {
@@ -123,78 +148,31 @@ public class AutoCodeConfigForm implements Configurable {
         autoCodeConfigComponent.setMicroPluginConfig(microPluginConfig);
     }
 
+    /**
+     * 是否编辑过
+     *
+     * @param autoCodeConfigComponent {@link AutoCodeConfigComponent}
+     * @return modified return true
+     */
     public boolean isModified(AutoCodeConfigComponent autoCodeConfigComponent) {
         MicroPluginConfig microPluginConfig = autoCodeConfigComponent.getMicroPluginConfig();
-        if (this.databaseUrl.getText() != null && !this.databaseUrl.getText().equals(microPluginConfig.getDatabaseUrl())) {
-            return true;
-        }
-        if ((this.databaseUser.getText() != null) && (!this.databaseUser.getText().equals(microPluginConfig.getDatabaseUser()))) {
-            return true;
-        }
-        if (this.databasePwd.getText() != null && !this.databasePwd.getText().equals(microPluginConfig.getDatabasePwd())) {
-            return true;
-        }
-        if (this.tableNamePrefix.getText() != null && !this.tableNamePrefix.getText().equals(microPluginConfig.getTableNamePrefix())) {
-            return true;
-        }
-
-        if (this.entityPackagePrefix.getText() != null && !this.entityPackagePrefix.getText().equals(microPluginConfig.getEntityPackagePrefix())) {
-            return true;
-        }
-        if (this.mapperPackagePrefix.getText() != null && !this.mapperPackagePrefix.getText().equals(microPluginConfig.getMapperPackagePrefix())) {
-            return true;
-        }
-        if (this.mapperXmlPackagePrefix.getText() != null && !this.mapperXmlPackagePrefix.getText().equals(microPluginConfig.getMapperXmlPackagePrefix())) {
-            return true;
-        }
-        if (this.servicePackagePrefix.getText() != null && !this.servicePackagePrefix.getText().equals(microPluginConfig.getServicePackagePrefix())) {
-            return true;
-        }
-        if (this.serviceImplPackagePrefix.getText() != null && !this.serviceImplPackagePrefix.getText().equals(microPluginConfig.getServiceImplPackagePrefix())) {
-            return true;
-        }
-        if (this.controllerPackagePrefix.getText() != null && !this.controllerPackagePrefix.getText().equals(microPluginConfig.getControllerPackagePrefix())) {
-            return true;
-        }
-
-        if (this.creator.getText() != null && !this.creator.getText().equals(microPluginConfig.getCreateAuthor())) {
-            return true;
-        }
-        if (this.email.getText() != null && !this.email.getText().equals(microPluginConfig.getCreateEmail())) {
-            return true;
-        }
-        if (this.projectPath.getText() != null && !this.projectPath.getText().equals(microPluginConfig.getProjectPath())) {
-            return true;
-        }
-
-        return false;
+        return this.valueEquals(this.databaseUrl, microPluginConfig.getDatabaseUrl()) ||
+                this.valueEquals(this.databaseUser, microPluginConfig.getDatabaseUser()) ||
+                this.valueEquals(this.databasePwd, microPluginConfig.getDatabasePwd()) ||
+                this.valueEquals(this.tableNamePrefix, microPluginConfig.getTableNamePrefix()) ||
+                this.valueEquals(this.entityPackagePrefix, microPluginConfig.getEntityPackagePrefix()) ||
+                this.valueEquals(this.mapperPackagePrefix, microPluginConfig.getMapperPackagePrefix()) ||
+                this.valueEquals(this.mapperXmlPackagePrefix, microPluginConfig.getMapperXmlPackagePrefix()) ||
+                this.valueEquals(this.servicePackagePrefix, microPluginConfig.getServicePackagePrefix()) ||
+                this.valueEquals(this.serviceImplPackagePrefix, microPluginConfig.getServiceImplPackagePrefix()) ||
+                this.valueEquals(this.controllerPackagePrefix, microPluginConfig.getControllerPackagePrefix()) ||
+                this.valueEquals(this.creator, microPluginConfig.getCreateAuthor()) ||
+                this.valueEquals(this.email, microPluginConfig.getCreateEmail()) ||
+                this.valueEquals(this.projectPath, microPluginConfig.getProjectPath());
     }
 
-    @Nls
-    @Override
-    public String getDisplayName() {
-        return Constants.MICRO_SERVICE;
-    }
-
-    @Nullable
-    @Override
-    public JComponent createComponent() {
-        Application application = ApplicationManager.getApplication();
-        AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-        this.setData(config);
-        return rootComponent;
-    }
-
-    @Override
-    public boolean isModified() {
-        return true;
-    }
-
-    @Override
-    public void apply() throws ConfigurationException {
-        Application application = ApplicationManager.getApplication();
-        AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-        this.getData(config);
+    private boolean valueEquals(JTextField jTextField, String value) {
+        return jTextField.getText() != null && !jTextField.getText().equals(value);
     }
 
 }
