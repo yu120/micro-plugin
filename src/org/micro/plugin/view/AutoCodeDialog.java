@@ -16,6 +16,8 @@ import org.micro.plugin.GeneratorFactory;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,7 +63,7 @@ public class AutoCodeDialog extends JDialog {
         AutoCodeConfigComponent autoCodeConfigComponent = application.getComponent(AutoCodeConfigComponent.class);
         XmlSerializerUtil.copyBean(autoCodeConfigComponent.getPluginConfig(), pluginConfig);
 
-        String inputTables = this.tableName.getText().trim().toUpperCase();
+        String inputTables = this.tableName.getText().trim();
         if (StringUtils.isNotBlank(inputTables)) {
             List<String> tableNames = new ArrayList<>();
             String[] tempTableNameArray = inputTables.split(",");
@@ -95,7 +97,6 @@ public class AutoCodeDialog extends JDialog {
             if (CollectionUtils.isEmpty(tempTableNames)) {
                 tempTableNames.addAll(tableInfoMap.keySet());
             }
-
             for (String tableName : tempTableNames) {
                 TableInfo tableInfo = tableInfoMap.get(tableName);
                 List<ColumnInfo> columnInfoList = columnInfoMap.get(tableName);
@@ -123,10 +124,16 @@ public class AutoCodeDialog extends JDialog {
             return "类名：" + ste.getFileName() + ";" +
                     "方法：" + ste.getMethodName() + ";" +
                     "行号：" + ste.getLineNumber() + ";" +
-                    "异常信息:" + e.getMessage();
+                    "异常信息:" + ex2String(e);
         }
 
         return e.getMessage();
+    }
+
+    private String ex2String(Throwable t) {
+        StringWriter sw = new StringWriter();
+        t.printStackTrace(new PrintWriter(sw, true));
+        return sw.getBuffer().toString();
     }
 
 }

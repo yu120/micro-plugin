@@ -1,7 +1,7 @@
-package ${servicePackage}.service;
+package ${servicePackage};
 
 import cn.micro.biz.commons.mybatis.extension.IMicroService;
-import ${entityPackage}.entity.${className};
+import ${entityPackage}.${className};
 
 /**
  * ${className} Service Interface

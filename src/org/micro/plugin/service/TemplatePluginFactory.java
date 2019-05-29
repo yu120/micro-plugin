@@ -19,6 +19,7 @@ public enum TemplatePluginFactory {
     private Map<VMTemplate, TemplatePlugin> templates = new HashMap<>();
 
     TemplatePluginFactory() {
+        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
         ServiceLoader<TemplatePlugin> templatePlugins = ServiceLoader.load(TemplatePlugin.class);
         for (TemplatePlugin templatePlugin : templatePlugins) {
             VMTemplate vmTemplate = templatePlugin.getClass().getAnnotation(VMTemplate.class);

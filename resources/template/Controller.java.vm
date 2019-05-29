@@ -1,6 +1,6 @@
-package ${controllerPackage}.controller;
+package ${controllerPackage};
 
-import ${servicePackage}.service.${className}Service;
+import ${servicePackage}.${className}Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

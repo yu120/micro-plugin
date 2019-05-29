@@ -1,9 +1,9 @@
-package ${serviceImplPackage}.service.impl;
+package ${serviceImplPackage};
 
 import cn.micro.biz.commons.mybatis.extension.MicroServiceImpl;
-import ${entityPackage}.entity.${className};
-import ${mapperPackage}.mapper.${className}Mapper;
-import ${servicePackage}.service.${className}Service;
+import ${entityPackage}.${className};
+import ${mapperPackage}.${className}Mapper;
+import ${servicePackage}.${className}Service;
 import org.springframework.stereotype.Service;
 
 /**
