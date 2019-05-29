@@ -20,7 +20,7 @@ import javax.swing.*;
  *
  * @author lry
  */
-@State(name = "AutoCodeConfigComponent", storages = {@Storage(file = "$APP_CONFIG$/platform-gen.xml")})
+@State(name = "AutoCodeConfigComponent", storages = @Storage(file = "micro-plugin.xml"))
 public class AutoCodeConfigComponent implements BaseComponent, Configurable, PersistentStateComponent<AutoCodeConfigComponent> {
 
     private PluginConfig pluginConfig = new PluginConfig();
