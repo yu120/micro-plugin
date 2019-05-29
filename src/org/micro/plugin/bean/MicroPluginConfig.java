@@ -11,9 +11,10 @@ public class MicroPluginConfig implements Serializable {
     private String databasePwd = "123456";
     private String projectPath = System.getProperty("user.home" ) + File.separator + "temp" + File.separator;
     private String tableNamePrefix;
-    private List<String> tableNames;
     private String createAuthor = "lry";
     private String createEmail = "595208882@qq.com";
+
+    private List<String> tableNames;
 
     public String getProjectPath() {
         return this.projectPath;

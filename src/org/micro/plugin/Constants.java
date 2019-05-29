@@ -2,6 +2,8 @@ package org.micro.plugin;
 
 public class Constants {
 
+    public static final String TEMPLATE = "template/";
+
     public static final String MICRO_SERVICE = "Micro Service";
     public static final String PACKAGE_PREFIX = "cn.micro.biz";
     public static final String JAR_LOCAL_PATH = "!/cn/micro/biz";

@@ -28,7 +28,7 @@ public class AutoCodeConfigForm implements Configurable {
     private JLabel creatorLabel;
     private JLabel projectPathLabel;
     private JLabel emailLabel;
-    private JLabel tablePrefixLabel;
+    private JLabel tableNamePrefixLabel;
 
     private JButton projectPathSelBtn;
 
@@ -38,7 +38,7 @@ public class AutoCodeConfigForm implements Configurable {
     private JTextField creator;
     private JTextField projectPath;
     private JTextField email;
-    private JTextField tablePrefix;
+    private JTextField tableNamePrefix;
 
 
     public AutoCodeConfigForm() {
@@ -49,7 +49,7 @@ public class AutoCodeConfigForm implements Configurable {
         this.creatorLabel.setLabelFor(this.creator);
         this.projectPathLabel.setLabelFor(this.projectPath);
         this.emailLabel.setLabelFor(this.email);
-        this.tablePrefixLabel.setLabelFor(this.tablePrefix);
+        this.tableNamePrefixLabel.setLabelFor(this.tableNamePrefix);
 
         this.projectPathSelBtn.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
@@ -74,7 +74,7 @@ public class AutoCodeConfigForm implements Configurable {
         this.creator.setText(microPluginConfig.getCreateAuthor());
         this.projectPath.setText(microPluginConfig.getProjectPath());
         this.email.setText(microPluginConfig.getCreateEmail());
-        this.tablePrefix.setText(microPluginConfig.getTableNamePrefix());
+        this.tableNamePrefix.setText(microPluginConfig.getTableNamePrefix());
     }
 
     public void getData(AutoCodeConfigComponent autoCodeConfigComponent) {
@@ -85,7 +85,7 @@ public class AutoCodeConfigForm implements Configurable {
         microPluginConfig.setCreateAuthor(this.creator.getText().trim());
         microPluginConfig.setProjectPath(this.projectPath.getText().trim());
         microPluginConfig.setCreateEmail(this.email.getText().trim());
-        microPluginConfig.setTableNamePrefix(this.tablePrefix.getText().trim());
+        microPluginConfig.setTableNamePrefix(this.tableNamePrefix.getText().trim());
         autoCodeConfigComponent.setMicroPluginConfig(microPluginConfig);
     }
 
@@ -97,7 +97,7 @@ public class AutoCodeConfigForm implements Configurable {
         boolean isModifiedT4 = (this.creator.getText() != null) && (!this.creator.getText().equals(microPluginConfig.getCreateAuthor()));
         boolean isModifiedT5 = (this.projectPath.getText() != null) && (!this.projectPath.getText().equals(microPluginConfig.getProjectPath()));
         boolean isModifiedT6 = (this.email.getText() != null) && (!this.email.getText().equals(microPluginConfig.getCreateEmail()));
-        boolean isModifiedT7 = (this.tablePrefix.getText() != null) && (!this.tablePrefix.getText().equals(microPluginConfig.getTableNamePrefix()));
+        boolean isModifiedT7 = (this.tableNamePrefix.getText() != null) && (!this.tableNamePrefix.getText().equals(microPluginConfig.getTableNamePrefix()));
         return isModifiedT1 || isModifiedT2 || isModifiedT3 || isModifiedT4 || isModifiedT5 || isModifiedT6 || isModifiedT7;
     }
 

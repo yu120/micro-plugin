@@ -21,26 +21,6 @@ import java.util.*;
  */
 public class GeneratorUtils {
 
-    private static final String TEMPLATE = "template/";
-
-    private static final String ENTITY = "Entity.java.vm";
-    private static final String MAPPER_JAVA = "Mapper.java.vm";
-    private static final String MAPPER_XML = "Mapper.xml.vm";
-    private static final String SERVICE = "Service.java.vm";
-    private static final String SERVICE_IMPL = "ServiceImpl.java.vm";
-    private static final String CONTROLLER = "Controller.java.vm";
-
-    private static List<String> getTemplates() {
-        List<String> templates = new ArrayList<>();
-        templates.add(ENTITY);
-        templates.add(MAPPER_JAVA);
-        templates.add(MAPPER_XML);
-        templates.add(SERVICE);
-        templates.add(SERVICE_IMPL);
-        templates.add(CONTROLLER);
-        return templates;
-    }
-
     private static Map<String, String> getConfig() {
         Map<String, String> map = new HashMap<>(32);
         map.put("char", "String");
@@ -69,7 +49,7 @@ public class GeneratorUtils {
      *
      * @param microPluginConfig micro config
      * @param tableInfo         table info
-     * @param columnInfoList  table column info list
+     * @param columnInfoList    table column info list
      * @throws Exception
      */
     public static void generatorCode(MicroPluginConfig microPluginConfig, TableInfo tableInfo, List<ColumnInfo> columnInfoList) throws Exception {
@@ -183,11 +163,11 @@ public class GeneratorUtils {
         VelocityContext context = new VelocityContext(map);
 
         // 获取模板列表
-        List<String> templates = getTemplates();
-        for (String template : templates) {
+        FileVmEnum[] fileVmEnums = FileVmEnum.values();
+        for (FileVmEnum fileVmEnum : fileVmEnums) {
             try (StringWriter stringWriter = new StringWriter()) {
-                Velocity.getTemplate(TEMPLATE + template, StandardCharsets.UTF_8.name()).merge(context, stringWriter);
-                String fileName = microPluginConfig.getProjectPath() + buildFilePathName(template, tableEntity.getClassName(), Constants.PACKAGE_PREFIX);
+                Velocity.getTemplate(Constants.TEMPLATE + fileVmEnum.getValue(), StandardCharsets.UTF_8.name()).merge(context, stringWriter);
+                String fileName = microPluginConfig.getProjectPath() + buildFilePathName(fileVmEnum, tableEntity.getClassName(), Constants.PACKAGE_PREFIX);
                 File file = new File(fileName);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
@@ -229,18 +209,18 @@ public class GeneratorUtils {
     /**
      * 组装文件全路径地址
      *
-     * @param template    template name
+     * @param fileVmEnum  {@link FileVmEnum}
      * @param className   class name
      * @param packageName package name
      * @return full file path name
      */
-    private static String buildFilePathName(String template, String className, String packageName) {
+    private static String buildFilePathName(FileVmEnum fileVmEnum, String className, String packageName) {
         String javaPath = "src" + File.separator + "main" + File.separator + "java" + File.separator;
         if (StringUtils.isNotBlank(packageName)) {
             javaPath += packageName.replace(".", File.separator) + File.separator;
         }
 
-        switch (template) {
+        switch (fileVmEnum) {
             case ENTITY:
                 return javaPath + "entity" + File.separator + className + ".java";
             case MAPPER_JAVA:
@@ -255,7 +235,7 @@ public class GeneratorUtils {
                 String resourcesPath = "src" + File.separator + "main" + File.separator + "resources" + File.separator;
                 return resourcesPath + "mapper" + File.separator + className + "Mapper.xml";
             default:
-                throw new IllegalArgumentException("没有配置模板：" + template);
+                throw new IllegalArgumentException("没有配置模板：" + fileVmEnum.getValue());
         }
     }
 
