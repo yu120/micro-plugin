@@ -21,13 +21,12 @@ public class DatabaseUtil {
     }
 
     private Connection getConnection() throws Exception {
-        if (this.conn != null) {
-            return this.conn;
+        if (conn != null) {
+            return conn;
         }
 
         Class.forName("com.mysql.jdbc.Driver");
-        return DriverManager.getConnection(this.bean.getDatabaseUrl(),
-                this.bean.getDatabaseUser(), this.bean.getDatabasePwd());
+        return conn = DriverManager.getConnection(bean.getDatabaseUrl(), bean.getDatabaseUser(), bean.getDatabasePwd());
     }
 
     /**
