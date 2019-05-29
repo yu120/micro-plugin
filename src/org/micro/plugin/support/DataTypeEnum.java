@@ -51,7 +51,7 @@ public enum DataTypeEnum {
             }
         }
 
-        return "unknowType";
+        return "unknownType";
     }
 
 }
