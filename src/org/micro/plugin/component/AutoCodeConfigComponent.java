@@ -20,7 +20,7 @@ import javax.swing.*;
 public class AutoCodeConfigComponent implements BaseComponent, Configurable, PersistentStateComponent<AutoCodeConfigComponent> {
 
     private MicroPluginConfig microPluginConfig = new MicroPluginConfig();
-    private AutoCodeConfigForm form;
+    private AutoCodeConfigForm autoCodeConfigForm;
 
     @Override
     public void initComponent() {
@@ -39,34 +39,34 @@ public class AutoCodeConfigComponent implements BaseComponent, Configurable, Per
     @Nullable
     @Override
     public JComponent createComponent() {
-        if (this.form == null) {
-            this.form = new AutoCodeConfigForm();
+        if (this.autoCodeConfigForm == null) {
+            this.autoCodeConfigForm = new AutoCodeConfigForm();
         }
-        return this.form.getRootComponent();
+        return this.autoCodeConfigForm.getRootComponent();
     }
 
     @Override
     public boolean isModified() {
-        return (this.form != null) && (this.form.isModified(this));
+        return (this.autoCodeConfigForm != null) && (this.autoCodeConfigForm.isModified(this));
     }
 
     @Override
     public void apply() throws ConfigurationException {
-        if (this.form != null) {
-            this.form.getData(this);
+        if (this.autoCodeConfigForm != null) {
+            this.autoCodeConfigForm.getData(this);
         }
     }
 
     @Override
     public void reset() {
-        if (this.form != null) {
-            this.form.setData(this);
+        if (this.autoCodeConfigForm != null) {
+            this.autoCodeConfigForm.setData(this);
         }
     }
 
     @Override
     public void disposeUIResources() {
-        this.form = null;
+        this.autoCodeConfigForm = null;
     }
 
     @Nls
