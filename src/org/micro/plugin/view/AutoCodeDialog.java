@@ -40,7 +40,7 @@ public class AutoCodeDialog extends JDialog {
         super.getRootPane().setDefaultButton(this.buttonOK);
         super.setSize(700, 300);
         super.setLocationRelativeTo(null);
-        super.setTitle(Constants.MICRO_SERVICE);
+        super.setTitle(Constants.DISPLAY_NAME);
 
         this.buttonOK.addActionListener(e -> onOK());
         this.buttonCancel.addActionListener(e -> dispose());

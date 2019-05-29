@@ -7,7 +7,7 @@ package org.micro.plugin;
  */
 public class Constants {
 
-    public static final String MICRO_SERVICE = "Micro Service";
+    public static final String DISPLAY_NAME = "Micro Service";
 
     public static final String SELECT_ALL_TABLE_NAME_SQL =
             "SELECT table_name,table_comment " +
