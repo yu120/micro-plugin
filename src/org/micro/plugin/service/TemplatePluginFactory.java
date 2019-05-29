@@ -1,8 +1,5 @@
 package org.micro.plugin.service;
 
-import org.micro.plugin.service.TemplatePlugin;
-import org.micro.plugin.service.VMTemplate;
-
 import java.util.*;
 
 /**
