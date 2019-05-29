@@ -9,7 +9,7 @@ public class MicroPluginConfig implements Serializable {
     private String databaseUrl = "jdbc:mysql://localhost:3306/micro?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8";
     private String databaseUser = "root";
     private String databasePwd = "123456";
-    private String projectPath = System.getProperty("user.home") + File.separator + "temp" + File.separator;
+    private String projectPath = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
     private String tableNamePrefix = "";
     private String entityPackagePrefix = "cn.micro.biz.entity";
     private String mapperPackagePrefix = "cn.micro.biz.mapper";
@@ -17,7 +17,7 @@ public class MicroPluginConfig implements Serializable {
     private String serviceImplPackagePrefix = "cn.micro.biz.service.impl";
     private String controllerPackagePrefix = "cn.micro.biz.controller";
     private String mapperXmlPackagePrefix = "main.resources.mapper";
-    private String createAuthor = "lry";
+    private String createAuthor = System.getProperty("user.name");
     private String createEmail = "595208882@qq.com";
 
     private List<String> tableNames;
