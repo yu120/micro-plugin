@@ -1,0 +1,6 @@
+org.micro.plugin.service.support.EntityTemplatePlugin
+org.micro.plugin.service.support.MapperTemplatePlugin
+org.micro.plugin.service.support.MapperXmlTemplatePlugin
+org.micro.plugin.service.support.ServiceTemplatePlugin
+org.micro.plugin.service.support.ServiceImplTemplatePlugin
+org.micro.plugin.service.support.ControllerTemplatePlugin

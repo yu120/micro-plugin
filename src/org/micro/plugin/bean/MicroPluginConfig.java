@@ -16,7 +16,7 @@ public class MicroPluginConfig implements Serializable {
     private String servicePackagePrefix = "cn.micro.biz.service";
     private String serviceImplPackagePrefix = "cn.micro.biz.service.impl";
     private String controllerPackagePrefix = "cn.micro.biz.controller";
-    private String mapperXmlPackagePrefix = "main.resources.mapper";
+    private String mapperXmlPackagePrefix = "mapper";
     private String createAuthor = System.getProperty("user.name");
     private String createEmail = "595208882@qq.com";
 

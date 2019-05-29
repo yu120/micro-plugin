@@ -1,7 +1,5 @@
 package org.micro.plugin.util;
 
-import jdk.nashorn.internal.runtime.JSONFunctions;
-
 /**
  * Data Type Enum
  *

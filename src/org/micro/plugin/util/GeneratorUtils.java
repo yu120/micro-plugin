@@ -1,15 +1,15 @@
 package org.micro.plugin.util;
 
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
 import org.micro.plugin.Constants;
+import org.micro.plugin.service.TemplatePluginFactory;
+import org.micro.plugin.service.VMTemplate;
 import org.micro.plugin.bean.*;
-import org.micro.plugin.component.AutoCodeConfigComponent;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.micro.plugin.service.TemplatePlugin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,29 +23,6 @@ import java.util.*;
  */
 public class GeneratorUtils {
 
-    private static Map<String, String> getConfig() {
-        Map<String, String> map = new HashMap<>(32);
-        map.put("char", "String");
-        map.put("varchar", "String");
-        map.put("tinytext", "String");
-        map.put("text", "String");
-        map.put("mediumtext", "String");
-        map.put("longtext", "String");
-        map.put("tinyint", "Integer");
-        map.put("smallint", "Integer");
-        map.put("mediumint", "Integer");
-        map.put("int", "Integer");
-        map.put("integer", "Integer");
-        map.put("bigint", "Long");
-        map.put("float", "Float");
-        map.put("double", "Double");
-        map.put("decimal", "BigDecimal");
-        map.put("date", "Date");
-        map.put("datetime", "Date");
-        map.put("timestamp", "Date");
-        return map;
-    }
-
     /**
      * 生成代码
      *
@@ -55,9 +32,6 @@ public class GeneratorUtils {
      * @throws Exception throw exception
      */
     public static void generateCode(MicroPluginConfig microPluginConfig, TableInfo tableInfo, List<ColumnInfo> columnInfoList) throws Exception {
-        Application application = ApplicationManager.getApplication();
-        AutoCodeConfigComponent applicationComponent = application.getComponent(AutoCodeConfigComponent.class);
-
         // 表信息
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(tableInfo.getTableName());
@@ -99,7 +73,6 @@ public class GeneratorUtils {
             if (("PRI".equalsIgnoreCase(columnInfo.getColumnKey()) && tableEntity.getPk() == null)) {
                 tableEntity.setPk(columnEntity);
             }
-
             columnEntities.add(columnEntity);
         }
         tableEntity.setColumns(columnEntities);
@@ -129,43 +102,37 @@ public class GeneratorUtils {
         properties.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogChute");
         try {
             // 安装插件后 从jar文件中加载模板文件
-            // 设置jar包所在的位置
             String jarPath = GeneratorUtils.class.getResource("").getPath().split(Constants.JAR_LOCAL_PATH)[0];
-
-            // 设置velocity资源加载方式为jar
             properties.setProperty("resource.loader", "jar");
-            // 设置velocity资源加载方式为jar时的处理类
-            properties.setProperty("jar.resource.loader.class", "org.apache.velocity.runtime.resource.loader.JarResourceLoader");
             properties.setProperty("jar.resource.loader.path", "jar:" + jarPath);
+            properties.setProperty("jar.resource.loader.class", "org.apache.velocity.runtime.resource.loader.JarResourceLoader");
         } catch (Exception e) {
             // 从类路径加载模板文件
-            properties.setProperty("file.resource.loader.path", GeneratorUtils.class.getResource("/").getPath());
+            String jarPath = GeneratorUtils.class.getResource("/").getPath();
+            properties.setProperty("file.resource.loader.path", jarPath);
         }
         Velocity.init(properties);
 
         // 封装模板数据
-        Map<String, Object> map = new HashMap<>();
-        map.put("tableName", tableEntity.getTableName());
-        map.put("comments", tableEntity.getComments());
-        map.put("pk", tableEntity.getPk());
-        map.put("className", tableEntity.getClassName());
-        map.put("classname", tableEntity.getClassname());
-        map.put("pathName", tableEntity.getClassname().toLowerCase());
-        map.put("columns", tableEntity.getColumns());
-        map.put("package", Constants.PACKAGE_PREFIX);
-        map.put("author", applicationComponent.getMicroPluginConfig().getCreateAuthor());
-        map.put("datetime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        map.put("hasDate", hasDate);
-        map.put("hasBigDecimal", hasBigDecimal);
-        map.put("pre", tableNamePrefix);
-        VelocityContext velocityContext = new VelocityContext(map);
+        Map<String, Object> parameters = buildTemplateParameters(tableEntity, microPluginConfig, hasDate, hasBigDecimal);
+        VelocityContext velocityContext = new VelocityContext(parameters);
 
         // 获取模板列表
-        FileVmEnum[] fileVmEnums = FileVmEnum.values();
-        for (FileVmEnum fileVmEnum : fileVmEnums) {
+        Map<VMTemplate, TemplatePlugin> templates = TemplatePluginFactory.INSTANCE.getTemplates();
+        for (Map.Entry<VMTemplate, TemplatePlugin> entry : templates.entrySet()) {
+            VMTemplate vmTemplate = entry.getKey();
+            TemplatePlugin templatePlugin = entry.getValue();
+
+            String filePathName = microPluginConfig.getProjectPath();
+            if (!filePathName.endsWith(File.separator)) {
+                filePathName += File.separator;
+            }
+            filePathName += templatePlugin.buildPath(vmTemplate, microPluginConfig, tableEntity.getClassName());
+
             try (StringWriter stringWriter = new StringWriter()) {
-                Velocity.getTemplate(Constants.TEMPLATE + fileVmEnum.getValue(), StandardCharsets.UTF_8.name()).merge(velocityContext, stringWriter);
-                String filePathName = buildFilePathName(microPluginConfig, fileVmEnum, tableEntity.getClassName());
+                Velocity.getTemplate(Constants.TEMPLATE + vmTemplate.value(),
+                        StandardCharsets.UTF_8.name()).merge(velocityContext, stringWriter);
+
                 File file = new File(filePathName);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
@@ -177,6 +144,33 @@ public class GeneratorUtils {
                 }
             }
         }
+    }
+
+    /**
+     * 封装模板数据
+     *
+     * @param tableEntity       {@link TableEntity}
+     * @param microPluginConfig {@link MicroPluginConfig}
+     * @param hasDate           has date
+     * @param hasBigDecimal     has BigDecimal
+     * @return template need parameters
+     */
+    private static Map<String, Object> buildTemplateParameters(
+            TableEntity tableEntity, MicroPluginConfig microPluginConfig, boolean hasDate, boolean hasBigDecimal) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("tableName", tableEntity.getTableName());
+        parameters.put("comments", tableEntity.getComments());
+        parameters.put("pk", tableEntity.getPk());
+        parameters.put("className", tableEntity.getClassName());
+        parameters.put("classname", tableEntity.getClassname());
+        parameters.put("pathName", tableEntity.getClassname().toLowerCase());
+        parameters.put("columns", tableEntity.getColumns());
+        parameters.put("package", Constants.PACKAGE_PREFIX);
+        parameters.put("author", microPluginConfig.getCreateAuthor());
+        parameters.put("datetime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        parameters.put("hasDate", hasDate);
+        parameters.put("hasBigDecimal", hasBigDecimal);
+        return parameters;
     }
 
     /**
@@ -202,47 +196,6 @@ public class GeneratorUtils {
         }
 
         return columnToJava(tableName);
-    }
-
-    /**
-     * 组装文件全路径地址
-     *
-     * @param fileVmEnum {@link FileVmEnum}
-     * @param className  class name
-     * @return full file path name
-     */
-    private static String buildFilePathName(MicroPluginConfig microPluginConfig, FileVmEnum fileVmEnum, String className) {
-        String projectPath = microPluginConfig.getProjectPath();
-        if (!projectPath.endsWith(File.separator)) {
-            projectPath += File.separator;
-        }
-
-        StringBuilder javaPath = new StringBuilder(projectPath);
-        javaPath.append("src").append(File.separator).append("main").append(File.separator).append("java").append(File.separator);
-
-        switch (fileVmEnum) {
-            case ENTITY:
-                return javaPath.append(microPluginConfig.getEntityPackagePrefix().replace(".", File.separator))
-                        .append(File.separator).append(className).append(fileVmEnum.getSuffix()).toString();
-            case MAPPER_JAVA:
-                return javaPath.append(microPluginConfig.getMapperPackagePrefix().replace(".", File.separator))
-                        .append(File.separator).append(className).append(fileVmEnum.getSuffix()).toString();
-            case SERVICE:
-                return javaPath.append(microPluginConfig.getServicePackagePrefix().replace(".", File.separator))
-                        .append(File.separator).append(className).append(fileVmEnum.getSuffix()).toString();
-            case SERVICE_IMPL:
-                return javaPath.append(microPluginConfig.getServiceImplPackagePrefix().replace(".", File.separator))
-                        .append(File.separator).append(className).append(fileVmEnum.getSuffix()).toString();
-            case CONTROLLER:
-                return javaPath.append(microPluginConfig.getControllerPackagePrefix().replace(".", File.separator))
-                        .append(File.separator).append(className).append(fileVmEnum.getSuffix()).toString();
-            case MAPPER_XML:
-                return projectPath + "src" + File.separator +
-                        microPluginConfig.getMapperXmlPackagePrefix().replace(".", File.separator)
-                        + File.separator + className + fileVmEnum.getSuffix();
-            default:
-                throw new IllegalArgumentException("没有配置模板：" + fileVmEnum.getValue());
-        }
     }
 
 }
