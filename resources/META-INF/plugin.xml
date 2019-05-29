@@ -23,13 +23,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- add your extensions here -->
-        <applicationConfigurable instance="org.micro.plugin.form.AutoCodeConfigForm"/>
+        <applicationConfigurable instance="org.micro.plugin.view.AutoCodeConfigForm"/>
     </extensions>
 
     <application-components>
         <!-- add your application components here -->
         <component>
-            <implementation-class>org.micro.plugin.component.AutoCodeConfigComponent</implementation-class>
+            <implementation-class>org.micro.plugin.view.AutoCodeConfigComponent</implementation-class>
         </component>
     </application-components>
 

@@ -35,7 +35,7 @@ public enum GeneratorFactory {
         properties.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogChute");
         try {
             // 安装插件后 从jar文件中加载模板文件
-            String jarPath = GeneratorFactory.class.getResource("").getPath().split(Constants.JAR_LOCAL_PATH)[0];
+            String jarPath = GeneratorFactory.class.getResource("").getPath().split("!/org/micro/plugin")[0];
             properties.setProperty("resource.loader", "jar");
             properties.setProperty("jar.resource.loader.path", "jar:" + jarPath);
             properties.setProperty("jar.resource.loader.class", "org.apache.velocity.runtime.resource.loader.JarResourceLoader");
@@ -76,7 +76,7 @@ public enum GeneratorFactory {
             filePathName += templatePlugin.buildPath(vmTemplate, pluginConfig, tableEntity);
 
             try (StringWriter stringWriter = new StringWriter()) {
-                Velocity.getTemplate(Constants.TEMPLATE + vmTemplate.value(),
+                Velocity.getTemplate("template/" + vmTemplate.value(),
                         StandardCharsets.UTF_8.name()).merge(velocityContext, stringWriter);
 
                 File file = new File(filePathName);

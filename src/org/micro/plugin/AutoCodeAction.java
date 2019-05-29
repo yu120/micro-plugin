@@ -2,7 +2,7 @@ package org.micro.plugin;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import org.micro.plugin.dialog.AutoCodeDialog;
+import org.micro.plugin.view.AutoCodeDialog;
 
 public class AutoCodeAction extends AnAction {
 

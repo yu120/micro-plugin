@@ -1,4 +1,4 @@
-package org.micro.plugin.dialog;
+package org.micro.plugin.view;
 
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
@@ -10,7 +10,7 @@ import org.micro.plugin.Constants;
 import org.micro.plugin.bean.PluginConfig;
 import org.micro.plugin.bean.ColumnInfo;
 import org.micro.plugin.bean.TableInfo;
-import org.micro.plugin.component.AutoCodeConfigComponent;
+import org.micro.plugin.view.AutoCodeConfigComponent;
 import org.micro.plugin.support.DatabaseUtil;
 import org.micro.plugin.GeneratorFactory;
 

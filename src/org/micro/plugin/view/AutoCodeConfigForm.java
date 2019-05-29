@@ -1,4 +1,4 @@
-package org.micro.plugin.form;
+package org.micro.plugin.view;
 
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
@@ -6,7 +6,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.PluginConfig;
-import org.micro.plugin.component.AutoCodeConfigComponent;
+import org.micro.plugin.view.AutoCodeConfigComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 

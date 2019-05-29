@@ -1,4 +1,4 @@
-package org.micro.plugin.component;
+package org.micro.plugin.view;
 
 import com.intellij.openapi.components.BaseComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -9,7 +9,6 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.micro.plugin.Constants;
 import org.micro.plugin.bean.PluginConfig;
-import org.micro.plugin.form.AutoCodeConfigForm;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
