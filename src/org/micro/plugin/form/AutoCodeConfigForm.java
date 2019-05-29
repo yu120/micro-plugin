@@ -92,8 +92,7 @@ public class AutoCodeConfigForm implements Configurable {
     @Override
     public JComponent createComponent() {
         Application application = ApplicationManager.getApplication();
-        AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-        this.setData(config);
+        this.setData(application.getComponent(AutoCodeConfigComponent.class));
         return rootComponent;
     }
 
@@ -105,8 +104,7 @@ public class AutoCodeConfigForm implements Configurable {
     @Override
     public void apply() throws ConfigurationException {
         Application application = ApplicationManager.getApplication();
-        AutoCodeConfigComponent config = application.getComponent(AutoCodeConfigComponent.class);
-        this.getData(config);
+        this.getData(application.getComponent(AutoCodeConfigComponent.class));
     }
 
     public void setData(AutoCodeConfigComponent autoCodeConfigComponent) {
