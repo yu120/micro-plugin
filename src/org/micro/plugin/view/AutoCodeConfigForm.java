@@ -101,6 +101,13 @@ public class AutoCodeConfigForm implements Configurable {
     }
 
     @Override
+    public void reset() {
+        Application application = ApplicationManager.getApplication();
+        AutoCodeConfigComponent autoCodeConfigComponent = application.getComponent(AutoCodeConfigComponent.class);
+        this.setData(autoCodeConfigComponent);
+    }
+
+    @Override
     public void apply() throws ConfigurationException {
         Application application = ApplicationManager.getApplication();
         this.getData(application.getComponent(AutoCodeConfigComponent.class));
