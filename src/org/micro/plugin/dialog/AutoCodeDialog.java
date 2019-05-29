@@ -45,7 +45,7 @@ public class AutoCodeDialog extends JDialog {
         this.buttonOK.addActionListener(e -> AutoCodeDialog.this.onOK());
         this.buttonCancel.addActionListener(e -> AutoCodeDialog.this.onCancel());
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
+        super.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
                 AutoCodeDialog.this.onCancel();
