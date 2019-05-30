@@ -30,4 +30,8 @@ public enum TemplatePluginFactory {
         return templates;
     }
 
+    public boolean isEmptyTemplates() {
+        return templates == null || templates.isEmpty();
+    }
+
 }
